@@ -56,9 +56,9 @@ struct MainPopoverView: View {
     private var targetPopoverHeight: CGFloat {
         switch viewModel.selectedRange {
         case .oneMonth:
-            return 580.0
+            return 545.0
         case .threeMonths:
-            return 485.0
+            return 482.0
         case .sixMonths:
             return 445.0
         case .oneYear:
@@ -146,7 +146,7 @@ struct MainPopoverView: View {
                 .background(theme.headerBackgroundColor(isDark: isDark))
                 .overlay(Divider().background(theme.strokeColor(isDark: isDark)), alignment: .bottom)
 
-                // Content Area
+                // Content Area with Perfectly Equal Symmetrical Top (16px) & Bottom (16px) Padding
                 VStack(spacing: 16) {
                     if viewModel.isLoading && viewModel.days.isEmpty {
                         VStack(spacing: 12) {
@@ -295,10 +295,9 @@ struct MainPopoverView: View {
                         .liquidGlassCard(isDark: isDark, cornerRadius: 10)
                     }
                 }
-                .padding(16)
-                .frame(maxHeight: .infinity, alignment: .top)
-
-                Spacer(minLength: 0)
+                .padding(.horizontal, 16)
+                .padding(.top, 16)
+                .padding(.bottom, 16) // Equal 16px top & bottom padding around content cards!
 
                 // Footer Controls
                 HStack {
@@ -366,8 +365,8 @@ struct MainPopoverView: View {
     private func updateWindowSize(for range: TimeframeRange) {
         let height: CGFloat
         switch range {
-        case .oneMonth: height = 580.0
-        case .threeMonths: height = 485.0
+        case .oneMonth: height = 545.0
+        case .threeMonths: height = 482.0
         case .sixMonths: height = 445.0
         case .oneYear: height = 420.0
         }
