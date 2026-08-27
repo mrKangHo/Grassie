@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GrassTracker - Stats</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#ffffff",
+                        "secondary": "#0058bc",
+                        "on-primary-fixed": "#002203",
+                        "surface-container-low": "#f4f3f8",
+                        "on-secondary-fixed-variant": "#004493",
+                        "tertiary-container": "#ff8c96",
+                        "primary-fixed": "#71ff74",
+                        "on-error": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#eeedf3",
+                        "surface-variant": "#e3e2e7",
+                        "outline-variant": "#bccbb5",
+                        "surface-dim": "#dad9df",
+                        "error": "#ba1a1a",
+                        "surface-bright": "#faf9fe",
+                        "tertiary-fixed": "#ffdadb",
+                        "inverse-primary": "#4be257",
+                        "outline": "#6d7b68",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#28c840",
+                        "on-tertiary-container": "#77232f",
+                        "secondary-fixed-dim": "#adc6ff",
+                        "inverse-on-surface": "#f1f0f5",
+                        "primary-fixed-dim": "#4be257",
+                        "primary": "#006e1a",
+                        "surface-container-high": "#e9e7ed",
+                        "surface-tint": "#006e1a",
+                        "on-surface-variant": "#3d4a3a",
+                        "tertiary": "#9d3f4a",
+                        "surface-container-highest": "#e3e2e7",
+                        "on-error-container": "#93000a",
+                        "background": "#faf9fe",
+                        "on-tertiary-fixed-variant": "#7e2834",
+                        "on-secondary-container": "#fefcff",
+                        "secondary-fixed": "#d8e2ff",
+                        "on-secondary-fixed": "#001a41",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#004d0f",
+                        "inverse-surface": "#2f3034",
+                        "tertiary-fixed-dim": "#ffb2b7",
+                        "on-surface": "#1a1b1f",
+                        "on-tertiary-fixed": "#40000e",
+                        "error-container": "#ffdad6",
+                        "surface": "#faf9fe",
+                        "on-background": "#1a1b1f",
+                        "secondary-container": "#0070eb",
+                        "on-primary-fixed-variant": "#005311"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-gap-sm": "8px",
+                        "stack-gap-md": "16px",
+                        "grid-gap": "3px",
+                        "grid-node": "10px",
+                        "sidebar-width": "200px",
+                        "container-padding": "16px"
+                    },
+                    "fontFamily": {
+                        "body": ["Inter"],
+                        "display": ["Inter"],
+                        "headline": ["Inter"],
+                        "caption": ["Inter"],
+                        "mono-label": ["JetBrains Mono"],
+                        "body-bold": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body": ["13px", { "lineHeight": "18px", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "display": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "caption": ["11px", { "lineHeight": "14px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+                        "mono-label": ["10px", { "lineHeight": "12px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "body-bold": ["13px", { "lineHeight": "18px", "letterSpacing": "0em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: transparent; /* Rely on dark mode setup in Tailwind config for actual background if needed outside wrapper */
+        }
+        .mac-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .mac-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .mac-scrollbar::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 9999px;
+            border: 2px solid transparent;
+            background-clip: content-box;
+        }
+        .mac-scrollbar::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Glassmorphic Panel Base */
+        .glass-panel {
+            background-color: rgba(26, 27, 31, 0.6); /* on-surface base */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-dim/90 text-on-surface h-screen flex flex-col font-body antialiased overflow-hidden selection:bg-secondary/30">
+<!-- Background Layer (Level 0) - Simulating wallpaper behind translucent app -->
+<div class="fixed inset-0 z-[-1] pointer-events-none">
+<div class="w-full h-full bg-cover bg-center opacity-30" data-alt="A subtle, abstract dark mode wallpaper featuring soft, blurred gradients of deep blues and muted purples. The aesthetic is clean, minimal, and highly professional, resembling a default macOS desktop background. Lighting is subdued, creating a calm atmosphere for a productivity utility. No sharp edges or distracting elements." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCzh_-BurE5AKYQMPXmNr01xBNiuTo5NHyr6iPvm6WtCVnORA5_fBLwYh4C4uCClPM1f5ilTLiaVAZ1onuONNBbZGpbmzbOpeGvbWin0elvAqNEMPj8n9J5sOAwGvvHETpAQJ6xzoGLCo9yK5BmcKObMgtAOV6jUCp1ISRF0KfaApJM-X_HDet6ui28u5y3uSFYjfJB-88mmGD41wPWE0drDQvF9lqdT4gZ42U5YcDgehYMGGBmwYxG')"></div>
+</div>
+<!-- Main Application Wrapper (Level 1) -->
+<div class="flex-1 flex w-full max-w-6xl mx-auto h-full p-container-padding gap-container-padding overflow-hidden">
+<!-- NavigationDrawer (Sidebar) -->
+<nav class="hidden md:flex flex-col w-sidebar-width shrink-0 glass-panel rounded-xl h-full p-container-padding gap-stack-gap-sm border-r border-outline-variant/20">
+<!-- Profile Header -->
+<div class="flex items-center gap-stack-gap-md mb-stack-gap-md px-2">
+<div class="w-10 h-10 rounded-full bg-surface-variant overflow-hidden shrink-0 border border-outline-variant/30 flex items-center justify-center">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A professional avatar icon representing a user profile, rendered in a clean, vector graphic style on a dark background. The avatar is simple, abstract, and uses subtle gradients. The overall tone is modern, tech-focused, and aligns perfectly with a premium macOS utility application design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEAaO1G4iuY8P8wN5_WTa8DhGP7psqQuh3-WkGiX7WfyqnghVjj0cdkcmSIZjRbmfbOQ2acRygmhcbo4C_My6W6aGhz6A3rYzOWN-3cDGjD3aqdvLblF0FWgXgg8kow-CUmTc2B3rjLDdkzPN4ZCQGGI8RM33ZHlM1TSplcmfHup6xeyiXtERnITfNid8fnjCvE1VFz2oT17NGQrkwn4a3nGFDJ6OCDMLrru2xmAiOE84KLQ024L-7"/>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline text-headline text-on-surface truncate">Contribution Pro</span>
+<span class="font-caption text-caption text-on-surface-variant truncate">GitHub Connected</span>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="flex flex-col gap-1 w-full">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-on-surface/5 transition-all cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined text-[18px]">calendar_view_month</span>
+<span class="font-body text-body">Grid</span>
+</a>
+<!-- Active State -->
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-secondary/15 text-secondary dark:text-secondary-fixed font-body-bold transition-all cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined text-[18px]">query_stats</span>
+<span class="font-body text-body">Stats</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-on-surface/5 transition-all cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined text-[18px]">link</span>
+<span class="font-body text-body">Integrations</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-on-surface/5 transition-all cursor-pointer active:opacity-80 mt-auto" href="#">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+<span class="font-body text-body">Settings</span>
+</a>
+</div>
+<div class="mt-auto pt-4 px-3">
+<span class="font-caption text-caption text-on-surface-variant opacity-60">v1.2.0</span>
+</div>
+</nav>
+<!-- Main Detail View -->
+<main class="flex-1 flex flex-col h-full overflow-hidden relative">
+<!-- Mobile TopAppBar (Visible only on small screens) -->
+<header class="md:hidden glass-panel rounded-xl mb-stack-gap-md w-full sticky top-0 border-b border-outline-variant/30 shadow-sm flex items-center justify-between px-container-padding h-12 z-20">
+<div class="flex items-center gap-2 text-primary-fixed-dim">
+<span class="material-symbols-outlined">grid_view</span>
+</div>
+<h1 class="font-headline text-headline font-bold text-on-surface">GrassTracker</h1>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined">settings</span>
+</div>
+</header>
+<!-- Stats Canvas Content -->
+<div class="flex-1 overflow-y-auto mac-scrollbar pr-2 pb-container-padding flex flex-col gap-container-padding">
+<!-- Page Header & Back Navigation -->
+<div class="flex items-center justify-between mt-2 md:mt-0">
+<div class="flex items-center gap-3">
+<button class="w-8 h-8 rounded-full flex items-center justify-center bg-surface-container-low/20 border border-outline-variant/20 text-on-surface-variant hover:bg-surface-variant/30 hover:text-on-surface transition-colors cursor-pointer active:scale-95 duration-100">
+<span class="material-symbols-outlined text-[18px]">arrow_back_ios_new</span>
+</button>
+<h2 class="font-display text-display text-on-surface">Statistics</h2>
+</div>
+<!-- Segmented Control for Timeframe -->
+<div class="flex p-1 bg-surface-container-high/50 rounded-lg border border-outline-variant/10">
+<button class="px-4 py-1.5 rounded-md font-body text-body text-on-surface-variant hover:text-on-surface transition-colors">Week</button>
+<button class="px-4 py-1.5 rounded-md font-body-bold text-body-bold bg-surface/80 text-on-surface shadow-sm border border-outline-variant/10">Month</button>
+<button class="px-4 py-1.5 rounded-md font-body text-body text-on-surface-variant hover:text-on-surface transition-colors">Year</button>
+</div>
+</div>
+<!-- Bento Grid Layout for Stats -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-container-padding">
+<!-- Chart Card (Spans 2 columns) -->
+<div class="glass-panel rounded-xl p-container-padding lg:col-span-2 flex flex-col gap-stack-gap-md h-[300px]">
+<div class="flex justify-between items-center">
+<h3 class="font-headline text-headline text-on-surface">Monthly Overview</h3>
+<span class="font-caption text-caption text-secondary-fixed-dim bg-secondary/10 px-2 py-1 rounded-full border border-secondary/20">Oct 2023</span>
+</div>
+<!-- Placeholder for Bar Chart -->
+<div class="flex-1 w-full flex items-end justify-between gap-1 mt-4 relative">
+<!-- Background Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-10">
+<div class="w-full h-px bg-on-surface"></div>
+<div class="w-full h-px bg-on-surface"></div>
+<div class="w-full h-px bg-on-surface"></div>
+<div class="w-full h-px bg-on-surface"></div>
+</div>
+<!-- Bars (Simulated Data) -->
+<div class="w-full max-w-[40px] bg-primary/20 hover:bg-primary/40 border-t border-primary/50 transition-colors rounded-t-sm h-[20%] relative group cursor-pointer">
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-inverse-surface text-inverse-on-surface font-caption text-caption px-2 py-1 rounded whitespace-nowrap z-10 pointer-events-none shadow-lg">Oct 1: 3</div>
+</div>
+<div class="w-full max-w-[40px] bg-primary/40 hover:bg-primary/60 border-t border-primary/50 transition-colors rounded-t-sm h-[45%] relative group cursor-pointer"></div>
+<div class="w-full max-w-[40px] bg-primary/80 hover:bg-primary border-t border-primary-fixed transition-colors rounded-t-sm h-[80%] relative group cursor-pointer"></div>
+<div class="w-full max-w-[40px] bg-primary/10 hover:bg-primary/30 border-t border-primary/50 transition-colors rounded-t-sm h-[10%] relative group cursor-pointer"></div>
+<div class="w-full max-w-[40px] bg-primary/60 hover:bg-primary/80 border-t border-primary/60 transition-colors rounded-t-sm h-[65%] relative group cursor-pointer"></div>
+<div class="w-full max-w-[40px] bg-primary hover:bg-primary-container border-t border-primary-fixed-dim transition-colors rounded-t-sm h-[100%] relative group cursor-pointer shadow-[0_0_15px_rgba(75,226,87,0.2)]"></div>
+<div class="w-full max-w-[40px] bg-primary/30 hover:bg-primary/50 border-t border-primary/50 transition-colors rounded-t-sm h-[35%] relative group cursor-pointer"></div>
+<div class="w-full max-w-[40px] bg-surface-variant/20 hover:bg-surface-variant/40 border-t border-outline-variant/30 transition-colors rounded-t-sm h-[5%] relative group cursor-pointer"></div>
+</div>
+<!-- X-Axis Labels -->
+<div class="w-full flex justify-between font-mono-label text-mono-label text-on-surface-variant pt-2 border-t border-outline-variant/10">
+<span>W1</span>
+<span>W2</span>
+<span>W3</span>
+<span>W4</span>
+</div>
+</div>
+<!-- Metrics Column -->
+<div class="flex flex-col gap-container-padding lg:col-span-1">
+<!-- Best Day Metric -->
+<div class="glass-panel rounded-xl p-container-padding flex-1 flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary-fixed-dim border border-primary/20">
+<span class="material-symbols-outlined text-[16px]">local_fire_department</span>
+</div>
+<span class="font-mono-label text-mono-label text-on-surface-variant">Oct 14</span>
+</div>
+<div class="mt-4">
+<h4 class="font-caption text-caption text-on-surface-variant uppercase tracking-wider mb-1">Best Day</h4>
+<div class="flex items-baseline gap-2">
+<span class="font-display text-[32px] leading-tight font-bold text-on-surface">24</span>
+<span class="font-body text-body text-on-surface-variant">commits</span>
+</div>
+</div>
+</div>
+<!-- Average Metric -->
+<div class="glass-panel rounded-xl p-container-padding flex-1 flex flex-col justify-between relative overflow-hidden">
+<!-- Decorative background element -->
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-secondary/5 rounded-full blur-xl"></div>
+<div class="flex items-start justify-between relative z-10">
+<div class="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary-fixed-dim border border-secondary/20">
+<span class="material-symbols-outlined text-[16px]">stacked_line_chart</span>
+</div>
+<span class="font-caption text-caption text-primary-fixed-dim flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> 12%
+                                </span>
+</div>
+<div class="mt-4 relative z-10">
+<h4 class="font-caption text-caption text-on-surface-variant uppercase tracking-wider mb-1">Daily Average</h4>
+<div class="flex items-baseline gap-2">
+<span class="font-display text-[32px] leading-tight font-bold text-on-surface">5.2</span>
+<span class="font-body text-body text-on-surface-variant">/ day</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Activity List -->
+<div class="glass-panel rounded-xl flex flex-col flex-1 min-h-[300px]">
+<div class="p-container-padding border-b border-outline-variant/10 flex justify-between items-center sticky top-0 bg-surface-dim/40 backdrop-blur-md rounded-t-xl z-10">
+<h3 class="font-headline text-headline text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant">history</span>
+                            Recent Activity
+                        </h3>
+<button class="font-body text-body text-secondary-fixed hover:text-secondary-fixed-dim transition-colors">View All</button>
+</div>
+<div class="flex flex-col p-2 gap-1 overflow-y-auto mac-scrollbar">
+<!-- List Item 1 -->
+<div class="flex items-center gap-4 p-3 rounded-lg hover:bg-surface-variant/20 transition-colors group cursor-pointer border border-transparent hover:border-outline-variant/10">
+<div class="w-2 h-2 rounded-full bg-primary-fixed-dim shadow-[0_0_8px_rgba(75,226,87,0.4)] shrink-0"></div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-0.5">
+<span class="font-body-bold text-body-bold text-on-surface truncate pr-2">Implemented Glassmorphic UI</span>
+<span class="font-mono-label text-mono-label text-on-surface-variant shrink-0">10:42 AM</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-[14px]">article_shortcut</span>
+<span class="truncate">ui-overhaul-v2</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant/50"></span>
+<span class="truncate">frontend-repo</span>
+</div>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">chevron_right</span>
+</div>
+</div>
+<!-- List Item 2 -->
+<div class="flex items-center gap-4 p-3 rounded-lg hover:bg-surface-variant/20 transition-colors group cursor-pointer border border-transparent hover:border-outline-variant/10">
+<div class="w-2 h-2 rounded-full bg-primary/60 shrink-0"></div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-0.5">
+<span class="font-body-bold text-body-bold text-on-surface truncate pr-2">Fixed navigation state issue</span>
+<span class="font-mono-label text-mono-label text-on-surface-variant shrink-0">Yesterday</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-[14px]">article_shortcut</span>
+<span class="truncate">bugfix/nav-state</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant/50"></span>
+<span class="truncate">frontend-repo</span>
+</div>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">chevron_right</span>
+</div>
+</div>
+<!-- List Item 3 -->
+<div class="flex items-center gap-4 p-3 rounded-lg hover:bg-surface-variant/20 transition-colors group cursor-pointer border border-transparent hover:border-outline-variant/10">
+<div class="w-2 h-2 rounded-full bg-primary/30 shrink-0"></div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-0.5">
+<span class="font-body-bold text-body-bold text-on-surface truncate pr-2">Update README.md docs</span>
+<span class="font-mono-label text-mono-label text-on-surface-variant shrink-0">Oct 12</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-[14px]">article_shortcut</span>
+<span class="truncate">main</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant/50"></span>
+<span class="truncate">docs-repo</span>
+</div>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

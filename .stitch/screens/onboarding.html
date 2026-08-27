@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Welcome to GrassTracker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary": "#ffffff",
+                        "secondary": "#0058bc",
+                        "on-primary-fixed": "#002203",
+                        "surface-container-low": "#f4f3f8",
+                        "on-secondary-fixed-variant": "#004493",
+                        "tertiary-container": "#ff8c96",
+                        "primary-fixed": "#71ff74",
+                        "on-error": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#eeedf3",
+                        "surface-variant": "#e3e2e7",
+                        "outline-variant": "#bccbb5",
+                        "surface-dim": "#dad9df",
+                        "error": "#ba1a1a",
+                        "surface-bright": "#faf9fe",
+                        "tertiary-fixed": "#ffdadb",
+                        "inverse-primary": "#4be257",
+                        "outline": "#6d7b68",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#28c840",
+                        "on-tertiary-container": "#77232f",
+                        "secondary-fixed-dim": "#adc6ff",
+                        "inverse-on-surface": "#f1f0f5",
+                        "primary-fixed-dim": "#4be257",
+                        "primary": "#006e1a",
+                        "surface-container-high": "#e9e7ed",
+                        "surface-tint": "#006e1a",
+                        "on-surface-variant": "#3d4a3a",
+                        "tertiary": "#9d3f4a",
+                        "surface-container-highest": "#e3e2e7",
+                        "on-error-container": "#93000a",
+                        "background": "#faf9fe",
+                        "on-tertiary-fixed-variant": "#7e2834",
+                        "on-secondary-container": "#fefcff",
+                        "secondary-fixed": "#d8e2ff",
+                        "on-secondary-fixed": "#001a41",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#004d0f",
+                        "inverse-surface": "#2f3034",
+                        "tertiary-fixed-dim": "#ffb2b7",
+                        "on-surface": "#1a1b1f",
+                        "on-tertiary-fixed": "#40000e",
+                        "error-container": "#ffdad6",
+                        "surface": "#faf9fe",
+                        "on-background": "#1a1b1f",
+                        "secondary-container": "#0070eb",
+                        "on-primary-fixed-variant": "#005311"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "stack-gap-sm": "8px",
+                        "stack-gap-md": "16px",
+                        "grid-gap": "3px",
+                        "grid-node": "10px",
+                        "sidebar-width": "200px",
+                        "container-padding": "16px"
+                    },
+                    fontFamily: {
+                        "body": ["Inter"],
+                        "display": ["Inter"],
+                        "headline": ["Inter"],
+                        "caption": ["Inter"],
+                        "mono-label": ["JetBrains Mono"],
+                        "body-bold": ["Inter"]
+                    },
+                    fontSize: {
+                        "body": ["13px", { "lineHeight": "18px", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "display": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "caption": ["11px", { "lineHeight": "14px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+                        "mono-label": ["10px", { "lineHeight": "12px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "body-bold": ["13px", { "lineHeight": "18px", "letterSpacing": "0em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background-color: rgba(250, 249, 254, 0.05);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .glow-effect {
+            box-shadow: 0 0 40px rgba(75, 226, 87, 0.2);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-inverse-surface text-surface h-screen w-screen flex items-center justify-center overflow-hidden relative">
+<!-- Atmospheric background elements -->
+<div class="absolute top-[-20%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-primary/10 blur-[100px] pointer-events-none"></div>
+<div class="absolute bottom-[-20%] right-[-10%] w-[40vw] h-[40vw] rounded-full bg-secondary/10 blur-[120px] pointer-events-none"></div>
+<!-- Main Onboarding Container -->
+<div class="glass-panel rounded-xl p-8 max-w-md w-full mx-container-padding flex flex-col items-center text-center relative z-10 shadow-2xl">
+<!-- Hero Graphic (Grid representation) -->
+<div class="mb-8 relative glow-effect rounded-lg p-4 bg-inverse-surface/50 border border-outline-variant/20">
+<div class="grid grid-cols-5 gap-grid-gap p-1">
+<!-- Row 1 -->
+<div class="w-grid-node h-grid-node rounded-sm bg-surface-variant/20"></div>
+<div class="w-grid-node h-grid-node rounded-sm bg-primary-fixed-dim/40"></div>
+<div class="w-grid-node h-grid-node rounded-sm bg-primary-fixed/60"></div>
+<div class="w-grid-node h-grid-node rounded-sm bg-surface-variant/20"></div>
+<div class="w-grid-node h-grid-node rounded-sm bg-primary-container/80"></div>
+<!-- Row 2 -->
+<div class="w-grid-node h-grid-node rounded-sm bg-primary-fixed/60"></div>
+<div class="w-grid-node h-grid-node rounded-sm bg-surface-variant/20"></div>
+<div class="w-grid-node h-grid-node rounded-sm bg-primary-fixed-dim/40"></div>
+<div class="w-grid-node h-grid-node rounded-sm bg-primary-container/80"></div>
+<div class="w-grid-node h-grid-node rounded-sm bg-primary"></div>
+<!-- Row 3 -->
+<div class="w-grid-node h-grid-node rounded-sm bg-surface-variant/20"></div>
+<div class="w-grid-node h-grid-node rounded-sm bg-primary-container/80"></div>
+<div class="w-grid-node h-grid-node rounded-sm bg-primary"></div>
+<div class="w-grid-node h-grid-node rounded-sm bg-primary-fixed/60"></div>
+<div class="w-grid-node h-grid-node rounded-sm bg-surface-variant/20"></div>
+</div>
+<!-- Central Icon Overlay -->
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-fixed text-4xl drop-shadow-[0_0_15px_rgba(75,226,87,0.8)]" style="font-variation-settings: 'FILL' 1;">
+                    energy_savings_leaf
+                </span>
+</div>
+</div>
+<!-- Typography -->
+<h1 class="font-display text-display text-surface mb-stack-gap-sm">
+            Welcome to GrassTracker
+        </h1>
+<p class="font-body text-body text-surface-dim mb-8 px-4">
+            Track your open-source contributions right from your menu bar.
+        </p>
+<!-- Actions -->
+<div class="w-full flex flex-col gap-stack-gap-md">
+<button class="w-full py-3 px-4 bg-primary text-on-primary rounded-lg font-body-bold text-body-bold flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors active:scale-[0.98]">
+<span class="material-symbols-outlined text-lg">code</span>
+                Connect GitHub
+            </button>
+<button class="w-full py-2 px-4 text-surface-dim hover:text-surface font-body text-body transition-colors rounded-lg hover:bg-surface/5 active:bg-surface/10">
+                Skip for now
+            </button>
+</div>
+</div>
+</body></html>
