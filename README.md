@@ -7,7 +7,7 @@
 
 > **Languages**: [English](README.md) | [한국어](README.ko.md) | [日本語](README.ja.md) | [中文](README.zh.md)
 
-**Grassie** is a ultra-fast, native macOS Menu Bar application built with SwiftUI & AppKit that tracks your GitHub contribution grass grid and active streak in real-time right from your Mac's top bar.
+**Grassie** is an ultra-fast, native macOS Menu Bar application built with SwiftUI & AppKit that tracks your GitHub contribution grass grid and active streak in real-time right from your Mac's top bar.
 
 ---
 
@@ -15,9 +15,9 @@
 
 ## ✨ Key Features
 
-- 💧 **Liquid Glass UI**: Beautiful translucent frosted glass background (`NSVisualEffectView`) with liquid caustic light gradients.
+- 💧 **Liquid Glass UI**: Translucent frosted glass background (`NSVisualEffectView`) with liquid caustic light gradients.
 - 🟩 **Dynamic 3x3 Status Bar Icon**: Status bar icon renders your real recent 9 days of GitHub contribution levels live in your macOS top bar.
-- 🌱 **Dynamic Streak Badge Engine**: Emojis evolve based on your streak progress (`0d 🌱` -> `1-6d 🌿` -> `7-29d 🔥` -> `30-99d 🚀` -> `100d+ 👑`).
+- 🌱 **Dynamic Streak Badge Engine**: Emojis evolve based on your streak progress (`0d 🌱` ➡️ `1-6d 🌿` ➡️ `7-29d 🔥` ➡️ `30-99d 🚀` ➡️ `100d+ 👑`).
 - 🗓️ **Timeframe Range Selector**: Switch instantly between `1M`, `3M`, `6M`, and `1Y` view periods with auto-scaling responsive grid squares.
 - 🎨 **Appearance Modes**: System Auto (Follows macOS Dark/Light appearance), Liquid Dark, and Liquid Light.
 - 🌐 **Multi-Language Support**: Fully localized in English, Korean (한국어), Japanese (日本語), and Chinese (中文).
@@ -29,13 +29,13 @@
 
 ### Option 1: Homebrew (Recommended)
 ```bash
-brew tap username/grassie
+brew tap mrKangHo/grassie
 brew install grassie
 ```
 
 ### Option 2: Build from Source
 ```bash
-git clone https://github.com/username/Grassie.git
+git clone https://github.com/mrKangHo/Grassie.git
 cd Grassie
 swift build -c release
 open Grassie.app

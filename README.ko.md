@@ -29,13 +29,13 @@
 
 ### 방법 1: Homebrew 설치 (권장)
 ```bash
-brew tap username/grassie
+brew tap mrKangHo/grassie
 brew install grassie
 ```
 
 ### 방법 2: 소스코드 직접 빌드
 ```bash
-git clone https://github.com/username/Grassie.git
+git clone https://github.com/mrKangHo/Grassie.git
 cd Grassie
 swift build -c release
 open Grassie.app
