@@ -190,7 +190,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             button.target = self
         }
 
-        // Reactive Combine listeners: Update icon and title live when data fetches
+        // Reactive Combine listeners: Update icon and title live when data fetches or settings change
         viewModel.$days
             .receive(on: DispatchQueue.main)
             .sink { [weak self] days in
@@ -214,6 +214,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 self.updateStatusItem(days: self.viewModel.days, streak: self.viewModel.currentStreak)
             }
             .store(in: &cancellables)
+
+        viewModel.$selectedLanguage
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                self.updateStatusItem(days: self.viewModel.days, streak: self.viewModel.currentStreak)
+            }
+            .store(in: &cancellables)
     }
 
     private func updateStatusItem(days: [ContributionDay], streak: Int) {
@@ -222,7 +230,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if viewModel.username.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 button.title = " Grassie 🌱"
             } else {
-                button.title = " \(streak)d \(viewModel.streakBadgeEmoji)"
+                let localizedStreak = L10n.streakText(count: streak, language: viewModel.selectedLanguage)
+                button.title = " \(localizedStreak) \(viewModel.streakBadgeEmoji)"
             }
         }
     }

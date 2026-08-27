@@ -1,213 +1,218 @@
 import Foundation
 
 enum AppLanguage: String, CaseIterable, Identifiable {
-    case english = "en"
-    case korean = "ko"
-    case japanese = "ja"
-    case chinese = "zh"
+    case en = "English"
+    case ko = "한국어"
+    case ja = "日本語"
+    case zh = "中文"
 
     var id: String { self.rawValue }
 
     var displayName: String {
-        switch self {
-        case .english: return "English"
-        case .korean: return "한국어"
-        case .japanese: return "日本語"
-        case .chinese: return "中文"
-        }
+        return self.rawValue
     }
 
     static var systemDefault: AppLanguage {
-        let preferred = (Locale.preferredLanguages.first ?? "en").lowercased()
-
+        let preferred = Locale.preferredLanguages.first?.lowercased() ?? "en"
         if preferred.hasPrefix("ko") {
-            return .korean
+            return .ko
         } else if preferred.hasPrefix("ja") {
-            return .japanese
+            return .ja
         } else if preferred.hasPrefix("zh") {
-            return .chinese
+            return .zh
         } else {
-            return .english
+            return .en
         }
     }
 }
 
 struct L10n {
-    private static let translations: [String: [AppLanguage: String]] = [
-        "current_streak": [
-            .english: "Current Streak",
-            .korean: "현재 연속 달성",
-            .japanese: "現在の連続達成",
-            .chinese: "当前连续"
-        ],
-        "total_contributions": [
-            .english: "Total Contributions",
-            .korean: "총 커밋 / 잔디",
-            .japanese: "総貢献数",
-            .chinese: "总贡献数"
-        ],
-        "days": [
-            .english: "days",
-            .korean: "일",
-            .japanese: "日",
-            .chinese: "天"
-        ],
-        "contribution_graph": [
-            .english: "Contribution Graph",
-            .korean: "잔디 그래프",
-            .japanese: "貢献グラフ",
-            .chinese: "贡献图表"
-        ],
-        "last_1_month": [
-            .english: "Last 1 Month",
-            .korean: "최근 1개월",
-            .japanese: "過去1ヶ月",
-            .chinese: "最近1个月"
-        ],
-        "last_3_months": [
-            .english: "Last 3 Months",
-            .korean: "최근 3개월",
-            .japanese: "過去3ヶ月",
-            .chinese: "最近3个月"
-        ],
-        "last_6_months": [
-            .english: "Last 6 Months",
-            .korean: "최근 6개월",
-            .japanese: "過去6ヶ月",
-            .chinese: "最近6个月"
-        ],
-        "last_1_year": [
-            .english: "Last 1 Year",
-            .korean: "최근 1년",
-            .japanese: "過去1年",
-            .chinese: "最近1年"
-        ],
-        "view_full_stats": [
-            .english: "View Full Stats",
-            .korean: "전체 통계 보기",
-            .japanese: "詳細統計を見る",
-            .chinese: "查看完整统计"
-        ],
+    static func streakText(count: Int, language: AppLanguage) -> String {
+        switch language {
+        case .en:
+            return count == 1 ? "\(count) Day" : "\(count) Days"
+        case .ko:
+            return "\(count)일"
+        case .ja:
+            return "\(count)日"
+        case .zh:
+            return "\(count)天"
+        }
+    }
+
+    private static let strings: [String: [AppLanguage: String]] = [
+        // App General & Header
         "settings": [
-            .english: "Settings",
-            .korean: "설정",
-            .japanese: "設定",
-            .chinese: "设置"
-        ],
-        "github_account": [
-            .english: "GitHub Account",
-            .korean: "GitHub 계정",
-            .japanese: "GitHub アカウント",
-            .chinese: "GitHub 账号"
-        ],
-        "username": [
-            .english: "Username",
-            .korean: "사용자명",
-            .japanese: "ユーザー名",
-            .chinese: "用户名"
-        ],
-        "username_saved_auto": [
-            .english: "Username (Saved automatically)",
-            .korean: "사용자명 (자동 저장됨)",
-            .japanese: "ユーザー名（自動保存）",
-            .chinese: "用户名（自动保存）"
-        ],
-        "system_startup": [
-            .english: "System Startup",
-            .korean: "시스템 시작 설정",
-            .japanese: "システム起動設定",
-            .chinese: "系统启动设置"
-        ],
-        "launch_at_login": [
-            .english: "Launch automatically at macOS login",
-            .korean: "macOS 로그인 시 자동 실행",
-            .japanese: "macOS ログイン時に自動起動",
-            .chinese: "macOS 登录时自动启动"
-        ],
-        "launch_at_login_sub": [
-            .english: "App starts silently in Menu Bar upon system boot",
-            .korean: "부팅 시 메뉴바에 자동 등록되어 배경 실행됩니다",
-            .japanese: "起動時にメニューバーでバックグラウンド実行されます",
-            .chinese: "系统启动时在菜单栏后台自动运行"
-        ],
-        "appearance_mode": [
-            .english: "Appearance Mode",
-            .korean: "외관 테마 모드",
-            .japanese: "外観モード",
-            .chinese: "外观模式"
-        ],
-        "system_auto": [
-            .english: "System Auto",
-            .korean: "시스템 자동",
-            .japanese: "시스템自動",
-            .chinese: "系统自动"
-        ],
-        "liquid_dark": [
-            .english: "Liquid Dark",
-            .korean: "리퀴드 다크",
-            .japanese: "Liquid Dark",
-            .chinese: "Liquid Dark"
-        ],
-        "liquid_light": [
-            .english: "Liquid Light",
-            .korean: "리퀴드 라이트",
-            .japanese: "Liquid Light",
-            .chinese: "Liquid Light"
-        ],
-        "language": [
-            .english: "Language",
-            .korean: "언어 설정",
-            .japanese: "言語設定",
-            .chinese: "语言设置"
-        ],
-        "data_sync": [
-            .english: "Data Sync",
-            .korean: "데이터 동기화",
-            .japanese: "データ同期",
-            .chinese: "数据同步"
-        ],
-        "refresh_interval": [
-            .english: "Refresh Interval",
-            .korean: "갱신 주기",
-            .japanese: "更新間隔",
-            .chinese: "刷新间隔"
+            .en: "Settings",
+            .ko: "설정",
+            .ja: "設定",
+            .zh: "设置"
         ],
         "save_changes": [
-            .english: "Save Changes",
-            .korean: "변경사항 저장",
-            .japanese: "変更を保存",
-            .chinese: "保存更改"
+            .en: "Save Changes",
+            .ko: "변경사항 저장",
+            .ja: "変更を保存",
+            .zh: "保存更改"
         ],
         "saved": [
-            .english: "Saved",
-            .korean: "저장됨",
-            .japanese: "保存済み",
-            .chinese: "已保存"
+            .en: "Saved!",
+            .ko: "저장됨!",
+            .ja: "保存されました!",
+            .zh: "已保存！"
+        ],
+        "github_account": [
+            .en: "GitHub Account",
+            .ko: "GitHub 계정",
+            .ja: "GitHub アカウント",
+            .zh: "GitHub 账号"
+        ],
+        "username": [
+            .en: "GitHub Username",
+            .ko: "GitHub 아이디",
+            .ja: "GitHub ユーザー名",
+            .zh: "GitHub 用户名"
+        ],
+        "username_saved_auto": [
+            .en: "Username is saved automatically.",
+            .ko: "아이디 입력 시 자동으로 저장됩니다.",
+            .ja: "ユーザー名は自動的に保存されます。",
+            .zh: "用户名将自动保存。"
+        ],
+        "language": [
+            .en: "Language",
+            .ko: "언어 설정",
+            .ja: "言語設定",
+            .zh: "语言设置"
+        ],
+        "appearance_mode": [
+            .en: "Appearance Mode",
+            .ko: "외관 테마 설정",
+            .ja: "外観モード設定",
+            .zh: "外观主题设置"
+        ],
+        "system_auto": [
+            .en: "System Auto",
+            .ko: "시스템 자동",
+            .ja: "システム連動",
+            .zh: "跟随系统"
+        ],
+        "liquid_dark": [
+            .en: "Liquid Dark",
+            .ko: "리퀴드 다크",
+            .ja: "リキッドダーク",
+            .zh: "液态暗黑"
+        ],
+        "liquid_light": [
+            .en: "Liquid Light",
+            .ko: "리퀴드 라이트",
+            .ja: "リキッドライト",
+            .zh: "液态明亮"
+        ],
+        "system_startup": [
+            .en: "System Startup",
+            .ko: "시스템 자동 시작",
+            .ja: "システム自動起動",
+            .zh: "开机自动启动"
+        ],
+        "launch_at_login": [
+            .en: "Launch automatically at macOS login",
+            .ko: "macOS 로그인 시 자동 실행",
+            .ja: "macOS ログイン時に自動起動",
+            .zh: "macOS 登录时自动启动"
+        ],
+        "launch_at_login_sub": [
+            .en: "Start Grassie in background when Mac boots up",
+            .ko: "맥 부팅 시 백그라운드에서 실행합니다.",
+            .ja: "Mac 起動時にバックグラウンドで開始します。",
+            .zh: "Mac 开机时在后台自动运行。"
+        ],
+        "data_sync": [
+            .en: "Data Sync",
+            .ko: "데이터 동기화",
+            .ja: "数据同期",
+            .zh: "数据同步"
+        ],
+        "refresh_interval": [
+            .en: "Auto Refresh Interval",
+            .ko: "자동 갱신 주기",
+            .ja: "自動更新間隔",
+            .zh: "自动刷新间隔"
+        ],
+        "current_streak": [
+            .en: "Current Streak",
+            .ko: "현재 연속 커밋",
+            .ja: "現在のストリーク",
+            .zh: "当前连续提交"
+        ],
+        "total_contributions": [
+            .en: "Total Contributions",
+            .ko: "총 커밋 수",
+            .ja: "総コントリビューション",
+            .zh: "总贡献数"
+        ],
+        "days": [
+            .en: "days",
+            .ko: "일",
+            .ja: "日",
+            .zh: "天"
+        ],
+        "contribution_graph": [
+            .en: "Contribution Graph",
+            .ko: "잔디 그래프",
+            .ja: "草グラフ",
+            .zh: "贡献绿草图"
+        ],
+        "last_1_month": [
+            .en: "Last 1 Month",
+            .ko: "최근 1개월",
+            .ja: "直近1ヶ月",
+            .zh: "最近1个月"
+        ],
+        "last_3_months": [
+            .en: "Last 3 Months",
+            .ko: "최근 3개월",
+            .ja: "直近3ヶ月",
+            .zh: "最近3个月"
+        ],
+        "last_6_months": [
+            .en: "Last 6 Months",
+            .ko: "최근 6개월",
+            .ja: "直近6ヶ月",
+            .zh: "最近6个月"
+        ],
+        "last_1_year": [
+            .en: "Last 1 Year",
+            .ko: "최근 1년",
+            .ja: "直近1年",
+            .zh: "最近1年"
         ],
         "less": [
-            .english: "Less",
-            .korean: "적음",
-            .japanese: "少ない",
-            .chinese: "少"
+            .en: "Less",
+            .ko: "적음",
+            .ja: "少",
+            .zh: "较少"
         ],
         "more": [
-            .english: "More",
-            .korean: "많음",
-            .japanese: "多い",
-            .chinese: "多"
+            .en: "More",
+            .ko: "많음",
+            .ja: "多",
+            .zh: "较多"
+        ],
+        "view_full_stats": [
+            .en: "View Full Stats",
+            .ko: "상세 통계 보기",
+            .ja: "詳細統計を見る",
+            .zh: "查看详细统计"
         ],
         "fetching_contributions": [
-            .english: "Fetching live GitHub contributions...",
-            .korean: "실시간 GitHub 커밋 데이터를 불러오는 중...",
-            .japanese: "Live GitHub データを取得中...",
-            .chinese: "正在获取 GitHub 实时贡献..."
+            .en: "Fetching GitHub contributions...",
+            .ko: "GitHub 잔디를 불러오는 중...",
+            .ja: "GitHubのデータを取得中...",
+            .zh: "正在获取 GitHub 贡献数据..."
         ]
     ]
 
     static func string(_ key: String, language: AppLanguage) -> String {
-        if let dict = translations[key], let val = dict[language] {
-            return val
-        }
-        return translations[key]?[.english] ?? key
+        return strings[key]?[language] ?? strings[key]?[.en] ?? key
     }
 }
