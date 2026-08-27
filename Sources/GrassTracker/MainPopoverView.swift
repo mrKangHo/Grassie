@@ -106,22 +106,39 @@ struct MainPopoverView: View {
 
                     Spacer()
 
-                    // Settings Gear Button
-                    Button(action: {
-                        onOpenSettings()
-                    }) {
-                        Image(systemName: "gearshape.fill")
-                            .font(.system(size: 16))
-                            .foregroundColor(theme.textColor(isDark: isDark))
-                            .padding(8)
-                            .background(theme.headerBackgroundColor(isDark: isDark))
-                            .clipShape(Circle())
-                            .overlay(Circle().stroke(theme.strokeColor(isDark: isDark), lineWidth: 1))
-                    }
-                    .buttonStyle(.plain)
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        onOpenSettings()
+                    HStack(spacing: 8) {
+                        // Settings Gear Button
+                        Button(action: {
+                            onOpenSettings()
+                        }) {
+                            Image(systemName: "gearshape.fill")
+                                .font(.system(size: 15))
+                                .foregroundColor(theme.textColor(isDark: isDark))
+                                .padding(7)
+                                .background(theme.headerBackgroundColor(isDark: isDark))
+                                .clipShape(Circle())
+                                .overlay(Circle().stroke(theme.strokeColor(isDark: isDark), lineWidth: 1))
+                        }
+                        .buttonStyle(.plain)
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            onOpenSettings()
+                        }
+
+                        // Quit App Button
+                        Button(action: {
+                            NSApplication.shared.terminate(nil)
+                        }) {
+                            Image(systemName: "power")
+                                .font(.system(size: 14, weight: .bold))
+                                .foregroundColor(Color.red.opacity(0.9))
+                                .padding(7)
+                                .background(Color.red.opacity(0.12))
+                                .clipShape(Circle())
+                                .overlay(Circle().stroke(Color.red.opacity(0.3), lineWidth: 1))
+                        }
+                        .buttonStyle(.plain)
+                        .contentShape(Rectangle())
                     }
                 }
                 .padding(.horizontal, 16)

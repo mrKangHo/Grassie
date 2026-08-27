@@ -132,7 +132,7 @@ struct SettingsView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .liquidGlassCard(isDark: isDark, cornerRadius: 10)
 
-                        // Startup & System Login Section (Far-Right Edge Aligned Switch)
+                        // Startup & System Login Section
                         VStack(alignment: .leading, spacing: 8) {
                             Label(viewModel.tr("system_startup"), systemImage: "macwindow.on.rectangle")
                                 .font(.system(size: 13, weight: .bold))
@@ -197,7 +197,7 @@ struct SettingsView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .liquidGlassCard(isDark: isDark, cornerRadius: 10)
 
-                        // Data Sync Section (Clean Minimalist Button without Chevron)
+                        // Data Sync Section
                         VStack(alignment: .leading, spacing: 8) {
                             Label(viewModel.tr("data_sync"), systemImage: "arrow.triangle.2.circlepath")
                                 .font(.system(size: 13, weight: .bold))
@@ -230,6 +230,27 @@ struct SettingsView: View {
                         .padding(12)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .liquidGlassCard(isDark: isDark, cornerRadius: 10)
+
+                        // Quit Grassie Section Button
+                        Button(action: {
+                            NSApplication.shared.terminate(nil)
+                        }) {
+                            HStack(spacing: 6) {
+                                Image(systemName: "power")
+                                    .font(.system(size: 13, weight: .bold))
+                                Text("Quit Grassie")
+                                    .font(.system(size: 12, weight: .bold))
+                            }
+                            .foregroundColor(.red)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 9)
+                            .background(Color.red.opacity(0.12))
+                            .cornerRadius(8)
+                            .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.red.opacity(0.3), lineWidth: 1))
+                        }
+                        .buttonStyle(.plain)
+                        .contentShape(Rectangle())
+                        .padding(.top, 4)
                     }
                     .padding(16)
                 }
