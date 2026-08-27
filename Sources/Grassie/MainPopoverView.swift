@@ -56,9 +56,9 @@ struct MainPopoverView: View {
     private var targetPopoverHeight: CGFloat {
         switch viewModel.selectedRange {
         case .oneMonth:
-            return 520.0
+            return 580.0
         case .threeMonths:
-            return 475.0
+            return 485.0
         case .sixMonths:
             return 445.0
         case .oneYear:
@@ -366,8 +366,8 @@ struct MainPopoverView: View {
     private func updateWindowSize(for range: TimeframeRange) {
         let height: CGFloat
         switch range {
-        case .oneMonth: height = 520.0
-        case .threeMonths: height = 475.0
+        case .oneMonth: height = 580.0
+        case .threeMonths: height = 485.0
         case .sixMonths: height = 445.0
         case .oneYear: height = 420.0
         }
