@@ -3,7 +3,7 @@
 [![macOS 13+](https://img.shields.io/badge/macOS-13.0%2B-blue.svg)](https://apple.com)
 [![Swift 5.9+](https://img.shields.io/badge/Swift-5.9-orange.svg)](https://swift.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Homebrew Compatible](https://img.shields.io/badge/Homebrew-brew%20install-amber.svg)](grassie.rb)
+[![Homebrew Compatible](https://img.shields.io/badge/Homebrew-brew%20install-amber.svg)](Casks/grassie.rb)
 
 > **Languages**: [English](README.md) | [한국어](README.ko.md) | [日本語](README.ja.md) | [中文](README.zh.md)
 
@@ -29,8 +29,8 @@
 
 ### Option 1: Homebrew (Recommended)
 ```bash
-brew tap mrKangHo/grassie
-brew install grassie
+brew tap mrKangHo/Grassie https://github.com/mrKangHo/Grassie
+brew install --cask grassie
 ```
 
 ### Option 2: Build from Source
