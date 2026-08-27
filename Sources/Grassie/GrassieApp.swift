@@ -136,6 +136,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         if let iconImage = NSImage(contentsOfFile: "/Users/lee/Documents/githubBar/grasstracker_app_icon.jpg") {
             NSApp.applicationIconImage = iconImage
+        } else if let resourcePath = Bundle.main.path(forResource: "AppIcon", ofType: "icns"),
+                  let iconImage = NSImage(contentsOfFile: resourcePath) {
+            NSApp.applicationIconImage = iconImage
         }
 
         let popover = NSPopover()

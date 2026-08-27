@@ -12,7 +12,7 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "Grassie",
-            path: "Sources/GrassTracker"
+            path: "Sources/Grassie"
         )
     ]
 )
