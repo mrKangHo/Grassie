@@ -1,6 +1,6 @@
 cask "grassie" do
   version "1.0.1"
-  sha256 "9ff46f6920d17af081e24582fcd931a314aeede2edc33292a78950ac5fea5a0a"
+  sha256 "11a41b6e483c78be9f6a832c10861100495c65b029b387f41581d4c0c314658a"
 
   url "https://github.com/mrKangHo/Grassie/releases/download/v#{version}/Grassie-v#{version}.zip"
   name "Grassie"
@@ -8,4 +8,8 @@ cask "grassie" do
   homepage "https://github.com/mrKangHo/Grassie"
 
   app "Grassie.app"
+
+  postflight do
+    system_command "xattr", args: ["-cr", "#{appdir}/Grassie.app"]
+  end
 end
