@@ -1,6 +1,6 @@
 cask "grassie" do
-  version "1.0.3"
-  sha256 "f72d88c75f0e74034c13abe427f9019ab6098cc84e5f537ea2e48f0e9853aba5"
+  version "1.0.4"
+  sha256 "d85b77cb49fbf6a0fb691c3cb277f7fa18387caf64b7cf37d54577fc280e8e32"
 
   url "https://github.com/mrKangHo/Grassie/releases/download/v#{version}/Grassie-v#{version}.zip"
   name "Grassie"
