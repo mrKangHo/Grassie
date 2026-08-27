@@ -11,7 +11,14 @@
 
 ---
 
-![Grassie Mascot App Icon](grasstracker_app_icon.jpg)
+<p align="center">
+  <img src="grasstracker_app_icon.jpg" width="160" alt="Grassie 3D Mascot Logo" />
+  <br />
+  <br />
+  <img src="docs/screenshots/grassie_main_popover.png" width="720" alt="Grassie macOS App Interface" />
+</p>
+
+---
 
 ## ✨ 主な機能
 
