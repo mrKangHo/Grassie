@@ -36,6 +36,10 @@ class WindowManager: ObservableObject {
         window.contentViewController = NSHostingController(rootView: settingsView)
         window.isReleasedWhenClosed = false
 
+        if let iconImage = NSImage(contentsOfFile: "/Users/lee/Documents/githubBar/grasstracker_app_icon.jpg") {
+            window.miniwindowImage = iconImage
+        }
+
         self.settingsWindow = window
         window.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
@@ -75,6 +79,10 @@ class WindowManager: ObservableObject {
         window.isMovableByWindowBackground = true
         window.contentViewController = NSHostingController(rootView: statsView)
         window.isReleasedWhenClosed = false
+
+        if let iconImage = NSImage(contentsOfFile: "/Users/lee/Documents/githubBar/grasstracker_app_icon.jpg") {
+            window.miniwindowImage = iconImage
+        }
 
         self.statsWindow = window
         window.makeKeyAndOrderFront(nil)
@@ -134,7 +142,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
 
-        if let iconImage = NSImage(contentsOfFile: "/Users/lee/Documents/githubBar/grasstracker_app_icon.jpg") {
+        let iconPath = "/Users/lee/Documents/githubBar/grasstracker_app_icon.jpg"
+        if let iconImage = NSImage(contentsOfFile: iconPath) {
             NSApp.applicationIconImage = iconImage
         } else if let resourcePath = Bundle.main.path(forResource: "AppIcon", ofType: "icns"),
                   let iconImage = NSImage(contentsOfFile: resourcePath) {
