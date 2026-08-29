@@ -33,8 +33,7 @@ struct SettingsView: View {
                                 .background(theme.headerBackgroundColor(isDark: isDark))
                                 .clipShape(Circle())
                         }
-                        .buttonStyle(.plain)
-                        .contentShape(Rectangle())
+                        .buttonStyle(.applePress)
 
                         Text(viewModel.tr("settings"))
                             .font(.system(size: 16, weight: .bold))
@@ -63,8 +62,7 @@ struct SettingsView: View {
                         .foregroundColor(Color(hex: "004D0F"))
                         .cornerRadius(6)
                     }
-                    .buttonStyle(.plain)
-                    .contentShape(Rectangle())
+                    .buttonStyle(.applePress)
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
@@ -108,23 +106,24 @@ struct SettingsView: View {
 
                             HStack(spacing: 6) {
                                 ForEach(AppLanguage.allCases) { lang in
-                                    Text(lang.displayName)
-                                        .font(.system(size: 11, weight: viewModel.selectedLanguage == lang ? .bold : .regular))
-                                        .frame(maxWidth: .infinity)
-                                        .padding(.vertical, 8)
-                                        .background(viewModel.selectedLanguage == lang ? Color.primaryGreen.opacity(0.3) : theme.headerBackgroundColor(isDark: isDark))
-                                        .foregroundColor(viewModel.selectedLanguage == lang ? (isDark ? .primaryFixed : Color(hex: "006E1A")) : theme.secondaryTextColor(isDark: isDark))
-                                        .cornerRadius(6)
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 6)
-                                                .stroke(viewModel.selectedLanguage == lang ? Color.primaryGreen : theme.strokeColor(isDark: isDark), lineWidth: 1.5)
-                                        )
-                                        .contentShape(Rectangle())
-                                        .onTapGesture {
-                                            withAnimation(.easeInOut(duration: 0.2)) {
-                                                viewModel.selectedLanguage = lang
-                                            }
+                                    Button(action: {
+                                        withAnimation(.spring(response: 0.25, dampingFraction: 0.75)) {
+                                            viewModel.selectedLanguage = lang
                                         }
+                                    }) {
+                                        Text(lang.displayName)
+                                            .font(.system(size: 11, weight: viewModel.selectedLanguage == lang ? .bold : .regular))
+                                            .frame(maxWidth: .infinity)
+                                            .padding(.vertical, 8)
+                                            .background(viewModel.selectedLanguage == lang ? Color.primaryGreen.opacity(0.3) : theme.headerBackgroundColor(isDark: isDark))
+                                            .foregroundColor(viewModel.selectedLanguage == lang ? (isDark ? .primaryFixed : Color(hex: "006E1A")) : theme.secondaryTextColor(isDark: isDark))
+                                            .cornerRadius(6)
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 6)
+                                                    .stroke(viewModel.selectedLanguage == lang ? Color.primaryGreen : theme.strokeColor(isDark: isDark), lineWidth: 1.5)
+                                            )
+                                    }
+                                    .buttonStyle(.applePress(scale: 0.95))
                                 }
                             }
                         }
@@ -169,27 +168,28 @@ struct SettingsView: View {
 
                             HStack(spacing: 8) {
                                 ForEach(AppTheme.allCases) { appTheme in
-                                    VStack(spacing: 4) {
-                                        Image(systemName: appTheme == .auto ? "desktopcomputer" : (appTheme == .liquidDark ? "moon.fill" : "sun.max.fill"))
-                                            .font(.system(size: 14))
-                                        Text(viewModel.tr(appTheme.labelKey))
-                                            .font(.system(size: 10, weight: viewModel.selectedTheme == appTheme ? .bold : .regular))
-                                    }
-                                    .frame(maxWidth: .infinity)
-                                    .padding(.vertical, 10)
-                                    .background(viewModel.selectedTheme == appTheme ? Color.primaryGreen.opacity(0.3) : theme.headerBackgroundColor(isDark: isDark))
-                                    .foregroundColor(viewModel.selectedTheme == appTheme ? (isDark ? .primaryFixed : Color(hex: "006E1A")) : theme.secondaryTextColor(isDark: isDark))
-                                    .cornerRadius(8)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 8)
-                                            .stroke(viewModel.selectedTheme == appTheme ? Color.primaryGreen : theme.strokeColor(isDark: isDark), lineWidth: 1.5)
-                                    )
-                                    .contentShape(Rectangle())
-                                    .onTapGesture {
-                                        withAnimation(.easeInOut(duration: 0.2)) {
+                                    Button(action: {
+                                        withAnimation(.spring(response: 0.25, dampingFraction: 0.75)) {
                                             viewModel.selectedTheme = appTheme
                                         }
+                                    }) {
+                                        VStack(spacing: 4) {
+                                            Image(systemName: appTheme == .auto ? "desktopcomputer" : (appTheme == .liquidDark ? "moon.fill" : "sun.max.fill"))
+                                                .font(.system(size: 14))
+                                            Text(viewModel.tr(appTheme.labelKey))
+                                                .font(.system(size: 10, weight: viewModel.selectedTheme == appTheme ? .bold : .regular))
+                                        }
+                                        .frame(maxWidth: .infinity)
+                                        .padding(.vertical, 10)
+                                        .background(viewModel.selectedTheme == appTheme ? Color.primaryGreen.opacity(0.3) : theme.headerBackgroundColor(isDark: isDark))
+                                        .foregroundColor(viewModel.selectedTheme == appTheme ? (isDark ? .primaryFixed : Color(hex: "006E1A")) : theme.secondaryTextColor(isDark: isDark))
+                                        .cornerRadius(8)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 8)
+                                                .stroke(viewModel.selectedTheme == appTheme ? Color.primaryGreen : theme.strokeColor(isDark: isDark), lineWidth: 1.5)
+                                        )
                                     }
+                                    .buttonStyle(.applePress(scale: 0.95))
                                 }
                             }
                         }
@@ -248,8 +248,7 @@ struct SettingsView: View {
                             .cornerRadius(8)
                             .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.red.opacity(0.3), lineWidth: 1))
                         }
-                        .buttonStyle(.plain)
-                        .contentShape(Rectangle())
+                        .buttonStyle(.applePress)
                         .padding(.top, 4)
                     }
                     .padding(16)

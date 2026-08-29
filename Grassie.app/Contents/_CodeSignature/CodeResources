@@ -8,10 +8,21 @@
 		<data>
 		5HuVB1ACLISsZPpFsXftU4ZJIuU=
 		</data>
+		<key>Resources/Grassie_Grassie.bundle/AppIcon.icns</key>
+		<data>
+		5HuVB1ACLISsZPpFsXftU4ZJIuU=
+		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
 		<key>Resources/AppIcon.icns</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			rovPTL7VNCQytkYwzKRsUEOVmtxx9smbbw5w7yrpgjk=
+			</data>
+		</dict>
+		<key>Resources/Grassie_Grassie.bundle/AppIcon.icns</key>
 		<dict>
 			<key>hash2</key>
 			<data>

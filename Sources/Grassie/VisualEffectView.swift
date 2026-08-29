@@ -19,6 +19,28 @@ struct VisualEffectView: NSViewRepresentable {
     }
 }
 
+// Apple Pressable Button Style (Instant response on pointer down, spring velocity)
+struct ApplePressableButtonStyle: ButtonStyle {
+    var scale: CGFloat = 0.96
+    var opacity: Double = 0.88
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? scale : 1.0)
+            .opacity(configuration.isPressed ? opacity : 1.0)
+            .animation(.spring(response: 0.2, dampingFraction: 0.7), value: configuration.isPressed)
+    }
+}
+
+extension ButtonStyle where Self == ApplePressableButtonStyle {
+    static var applePress: ApplePressableButtonStyle {
+        ApplePressableButtonStyle()
+    }
+    static func applePress(scale: CGFloat = 0.96, opacity: Double = 0.88) -> ApplePressableButtonStyle {
+        ApplePressableButtonStyle(scale: scale, opacity: opacity)
+    }
+}
+
 struct LiquidGlassBackgroundView: View {
     var isDark: Bool = true
 
@@ -115,8 +137,8 @@ struct LiquidGlassCardModifier: ViewModifier {
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .stroke(
                         isDark
-                            ? LinearGradient(colors: [Color.white.opacity(0.3), Color.white.opacity(0.08)], startPoint: .topLeading, endPoint: .bottomTrailing)
-                            : LinearGradient(colors: [Color.black.opacity(0.12), Color.black.opacity(0.05)], startPoint: .topLeading, endPoint: .bottomTrailing),
+                            ? LinearGradient(colors: [Color.white.opacity(0.28), Color.white.opacity(0.06)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                            : LinearGradient(colors: [Color.black.opacity(0.12), Color.black.opacity(0.04)], startPoint: .topLeading, endPoint: .bottomTrailing),
                         lineWidth: 1
                     )
             )
@@ -129,3 +151,4 @@ extension View {
         self.modifier(LiquidGlassCardModifier(isDark: isDark, cornerRadius: cornerRadius))
     }
 }
+

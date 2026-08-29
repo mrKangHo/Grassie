@@ -96,7 +96,7 @@ struct MainPopoverView: View {
                 SettingsView(
                     viewModel: viewModel,
                     onBack: {
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                        withAnimation(.spring(response: 0.35, dampingFraction: 0.82)) {
                             activeScreen = .main
                             updateWindowSize(for: viewModel.selectedRange)
                         }
@@ -110,13 +110,13 @@ struct MainPopoverView: View {
                 StatisticsView(
                     viewModel: viewModel,
                     onBack: {
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                        withAnimation(.spring(response: 0.35, dampingFraction: 0.82)) {
                             activeScreen = .main
                             updateWindowSize(for: viewModel.selectedRange)
                         }
                     },
                     onOpenSettings: {
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                        withAnimation(.spring(response: 0.35, dampingFraction: 0.82)) {
                             activeScreen = .settings
                             updatePopoverHeight(440.0)
                         }
@@ -163,8 +163,7 @@ struct MainPopoverView: View {
                             .foregroundColor(isDark ? .primaryFixed : .white)
                             .cornerRadius(5)
                     }
-                    .buttonStyle(.plain)
-                    .contentShape(Rectangle())
+                    .buttonStyle(.applePress)
                 }
 
                 Spacer()
@@ -172,36 +171,34 @@ struct MainPopoverView: View {
                 HStack(spacing: 8) {
                     // Settings Gear Button (In-App Navigation)
                     Button(action: {
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                        withAnimation(.spring(response: 0.35, dampingFraction: 0.82)) {
                             activeScreen = .settings
                             updatePopoverHeight(440.0)
                         }
                     }) {
                         Image(systemName: "gearshape.fill")
-                            .font(.system(size: 15))
+                            .font(.system(size: 14))
                             .foregroundColor(theme.textColor(isDark: isDark))
                             .padding(7)
                             .background(theme.headerBackgroundColor(isDark: isDark))
                             .clipShape(Circle())
                             .overlay(Circle().stroke(theme.strokeColor(isDark: isDark), lineWidth: 1))
                     }
-                    .buttonStyle(.plain)
-                    .contentShape(Rectangle())
+                    .buttonStyle(.applePress)
 
                     // Quit App Button
                     Button(action: {
                         NSApplication.shared.terminate(nil)
                     }) {
                         Image(systemName: "power")
-                            .font(.system(size: 14, weight: .bold))
+                            .font(.system(size: 13, weight: .bold))
                             .foregroundColor(Color.red.opacity(0.9))
                             .padding(7)
                             .background(Color.red.opacity(0.12))
                             .clipShape(Circle())
                             .overlay(Circle().stroke(Color.red.opacity(0.3), lineWidth: 1))
                     }
-                    .buttonStyle(.plain)
-                    .contentShape(Rectangle())
+                    .buttonStyle(.applePress)
                 }
             }
             .padding(.horizontal, 16)
@@ -268,19 +265,21 @@ struct MainPopoverView: View {
                             // Range Switcher (1M, 3M, 6M, 1Y)
                             HStack(spacing: 2) {
                                 ForEach(TimeframeRange.allCases) { range in
-                                    Text(range.rawValue)
-                                        .font(.system(size: 11, weight: .bold, design: .monospaced))
-                                        .foregroundColor(viewModel.selectedRange == range ? .white : theme.secondaryTextColor(isDark: isDark))
-                                        .padding(.horizontal, 8)
-                                        .padding(.vertical, 4)
-                                        .background(viewModel.selectedRange == range ? (isDark ? Color.primaryContainer : Color(hex: "216E39")) : Color.clear)
-                                        .cornerRadius(5)
-                                        .onTapGesture {
-                                            withAnimation(.easeInOut(duration: 0.2)) {
-                                                viewModel.selectedRange = range
-                                                updateWindowSize(for: range)
-                                            }
+                                    Button(action: {
+                                        withAnimation(.spring(response: 0.25, dampingFraction: 0.75)) {
+                                            viewModel.selectedRange = range
+                                            updateWindowSize(for: range)
                                         }
+                                    }) {
+                                        Text(range.rawValue)
+                                            .font(.system(size: 11, weight: .bold, design: .monospaced))
+                                            .foregroundColor(viewModel.selectedRange == range ? .white : theme.secondaryTextColor(isDark: isDark))
+                                            .padding(.horizontal, 8)
+                                            .padding(.vertical, 4)
+                                            .background(viewModel.selectedRange == range ? (isDark ? Color.primaryContainer : Color(hex: "216E39")) : Color.clear)
+                                            .cornerRadius(5)
+                                    }
+                                    .buttonStyle(.applePress(scale: 0.94))
                                 }
                             }
                             .padding(2)
@@ -307,7 +306,7 @@ struct MainPopoverView: View {
                                                 .stroke(theme.grassBorderColor(for: day.level, isDark: isDark), lineWidth: 0.5)
                                         )
                                         .scaleEffect(hoveredDay?.id == day.id ? 1.25 : 1.0)
-                                        .animation(.spring(response: 0.2, dampingFraction: 0.6), value: hoveredDay?.id == day.id)
+                                        .animation(.spring(response: 0.2, dampingFraction: 0.65), value: hoveredDay?.id == day.id)
                                         .onHover { isHovered in
                                             if isHovered {
                                                 hoveredDay = day
@@ -382,16 +381,12 @@ struct MainPopoverView: View {
                     .cornerRadius(6)
                     .overlay(RoundedRectangle(cornerRadius: 6).stroke(theme.strokeColor(isDark: isDark), lineWidth: 1))
                 }
-                .buttonStyle(.plain)
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    viewModel.refresh()
-                }
+                .buttonStyle(.applePress)
 
                 Spacer()
 
                 Button(action: {
-                    withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                    withAnimation(.spring(response: 0.35, dampingFraction: 0.82)) {
                         activeScreen = .stats
                         updatePopoverHeight(480.0)
                     }
@@ -410,8 +405,7 @@ struct MainPopoverView: View {
                     .cornerRadius(6)
                     .shadow(color: Color.secondaryBlue.opacity(0.4), radius: 4, x: 0, y: 2)
                 }
-                .buttonStyle(.plain)
-                .contentShape(Rectangle())
+                .buttonStyle(.applePress)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 12)

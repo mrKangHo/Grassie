@@ -2,6 +2,25 @@ import SwiftUI
 import AppKit
 import Combine
 
+extension NSImage {
+    static var appIcon: NSImage? {
+        if let image = NSImage(named: "AppIcon") {
+            return image
+        }
+        if let resourcePath = Bundle.main.path(forResource: "AppIcon", ofType: "icns"),
+           let image = NSImage(contentsOfFile: resourcePath) {
+            return image
+        }
+        #if SWIFT_PACKAGE
+        if let resourcePath = Bundle.module.path(forResource: "AppIcon", ofType: "icns"),
+           let image = NSImage(contentsOfFile: resourcePath) {
+            return image
+        }
+        #endif
+        return nil
+    }
+}
+
 class WindowManager: ObservableObject {
     static let shared = WindowManager()
 
@@ -36,7 +55,7 @@ class WindowManager: ObservableObject {
         window.contentViewController = NSHostingController(rootView: settingsView)
         window.isReleasedWhenClosed = false
 
-        if let iconImage = NSImage(contentsOfFile: "/Users/lee/Documents/githubBar/grasstracker_app_icon.jpg") {
+        if let iconImage = NSImage.appIcon {
             window.miniwindowImage = iconImage
         }
 
@@ -80,7 +99,7 @@ class WindowManager: ObservableObject {
         window.contentViewController = NSHostingController(rootView: statsView)
         window.isReleasedWhenClosed = false
 
-        if let iconImage = NSImage(contentsOfFile: "/Users/lee/Documents/githubBar/grasstracker_app_icon.jpg") {
+        if let iconImage = NSImage.appIcon {
             window.miniwindowImage = iconImage
         }
 
@@ -119,6 +138,10 @@ class WindowManager: ObservableObject {
         window.contentViewController = NSHostingController(rootView: onboardingView)
         window.isReleasedWhenClosed = false
 
+        if let iconImage = NSImage.appIcon {
+            window.miniwindowImage = iconImage
+        }
+
         self.onboardingWindow = window
         window.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
@@ -142,11 +165,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
 
-        let iconPath = "/Users/lee/Documents/githubBar/grasstracker_app_icon.jpg"
-        if let iconImage = NSImage(contentsOfFile: iconPath) {
-            NSApp.applicationIconImage = iconImage
-        } else if let resourcePath = Bundle.main.path(forResource: "AppIcon", ofType: "icns"),
-                  let iconImage = NSImage(contentsOfFile: resourcePath) {
+        if let iconImage = NSImage.appIcon {
             NSApp.applicationIconImage = iconImage
         }
 
