@@ -41,6 +41,27 @@ extension ButtonStyle where Self == ApplePressableButtonStyle {
     }
 }
 
+// Critically-damped-by-default spring that degrades to a short cross-fade
+// when the user has Reduce Motion enabled (System Settings > Accessibility).
+extension Animation {
+    static func appleSpring(response: Double = 0.35, dampingFraction: Double = 0.82, reduceMotion: Bool) -> Animation {
+        reduceMotion ? .easeInOut(duration: 0.15) : .spring(response: response, dampingFraction: dampingFraction)
+    }
+}
+
+// A push/pop screen transition that slides in from `edge` and exits back
+// along the same edge (symmetric path), or falls back to a plain cross-fade
+// under Reduce Motion.
+extension AnyTransition {
+    static func applePush(edge: Edge, reduceMotion: Bool) -> AnyTransition {
+        guard !reduceMotion else { return .opacity }
+        return .asymmetric(
+            insertion: .move(edge: edge).combined(with: .opacity),
+            removal: .move(edge: edge).combined(with: .opacity)
+        )
+    }
+}
+
 struct LiquidGlassBackgroundView: View {
     var isDark: Bool = true
 

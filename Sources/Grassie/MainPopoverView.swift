@@ -12,6 +12,7 @@ struct MainPopoverView: View {
     var onOpenSettings: (() -> Void)? = nil
 
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var activeScreen: ActivePopoverScreen = .main
     @State private var hoveredDay: ContributionDay? = nil
 
@@ -88,35 +89,29 @@ struct MainPopoverView: View {
             switch activeScreen {
             case .main:
                 mainContentView
-                    .transition(.asymmetric(
-                        insertion: .move(edge: .leading).combined(with: .opacity),
-                        removal: .move(edge: .leading).combined(with: .opacity)
-                    ))
+                    .transition(.applePush(edge: .leading, reduceMotion: reduceMotion))
             case .settings:
                 SettingsView(
                     viewModel: viewModel,
                     onBack: {
-                        withAnimation(.spring(response: 0.35, dampingFraction: 0.82)) {
+                        withAnimation(.appleSpring(reduceMotion: reduceMotion)) {
                             activeScreen = .main
                             updateWindowSize(for: viewModel.selectedRange)
                         }
                     }
                 )
-                .transition(.asymmetric(
-                    insertion: .move(edge: .trailing).combined(with: .opacity),
-                    removal: .move(edge: .trailing).combined(with: .opacity)
-                ))
+                .transition(.applePush(edge: .trailing, reduceMotion: reduceMotion))
             case .stats:
                 StatisticsView(
                     viewModel: viewModel,
                     onBack: {
-                        withAnimation(.spring(response: 0.35, dampingFraction: 0.82)) {
+                        withAnimation(.appleSpring(reduceMotion: reduceMotion)) {
                             activeScreen = .main
                             updateWindowSize(for: viewModel.selectedRange)
                         }
                     },
                     onOpenSettings: {
-                        withAnimation(.spring(response: 0.35, dampingFraction: 0.82)) {
+                        withAnimation(.appleSpring(reduceMotion: reduceMotion)) {
                             activeScreen = .settings
                             updatePopoverHeight(440.0)
                         }
@@ -125,10 +120,7 @@ struct MainPopoverView: View {
                         // Fallback or setup
                     }
                 )
-                .transition(.asymmetric(
-                    insertion: .move(edge: .trailing).combined(with: .opacity),
-                    removal: .move(edge: .trailing).combined(with: .opacity)
-                ))
+                .transition(.applePush(edge: .trailing, reduceMotion: reduceMotion))
             }
         }
         .frame(width: 380, height: targetPopoverHeight)
@@ -171,7 +163,7 @@ struct MainPopoverView: View {
                 HStack(spacing: 8) {
                     // Settings Gear Button (In-App Navigation)
                     Button(action: {
-                        withAnimation(.spring(response: 0.35, dampingFraction: 0.82)) {
+                        withAnimation(.appleSpring(reduceMotion: reduceMotion)) {
                             activeScreen = .settings
                             updatePopoverHeight(440.0)
                         }
@@ -224,10 +216,12 @@ struct MainPopoverView: View {
                         VStack(alignment: .leading, spacing: 4) {
                             Text(viewModel.tr("current_streak").uppercased())
                                 .font(.system(size: 10, weight: .bold, design: .monospaced))
+                                .tracking(0.6)
                                 .foregroundColor(theme.secondaryTextColor(isDark: isDark))
                             HStack(alignment: .firstTextBaseline, spacing: 3) {
                                 Text("\(viewModel.currentStreak)")
                                     .font(.system(size: 26, weight: .heavy))
+                                    .tracking(-0.5)
                                     .foregroundColor(theme.textColor(isDark: isDark))
                                 Text(viewModel.tr("days"))
                                     .font(.system(size: 12, weight: .semibold))
@@ -242,9 +236,11 @@ struct MainPopoverView: View {
                         VStack(alignment: .leading, spacing: 4) {
                             Text(viewModel.tr("total_contributions").uppercased())
                                 .font(.system(size: 10, weight: .bold, design: .monospaced))
+                                .tracking(0.6)
                                 .foregroundColor(theme.secondaryTextColor(isDark: isDark))
                             Text("\(viewModel.totalContributions)")
                                 .font(.system(size: 26, weight: .heavy))
+                                .tracking(-0.5)
                                 .foregroundColor(theme.textColor(isDark: isDark))
                         }
                         .padding(12)
@@ -266,7 +262,7 @@ struct MainPopoverView: View {
                             HStack(spacing: 2) {
                                 ForEach(TimeframeRange.allCases) { range in
                                     Button(action: {
-                                        withAnimation(.spring(response: 0.25, dampingFraction: 0.75)) {
+                                        withAnimation(.appleSpring(response: 0.25, dampingFraction: 0.75, reduceMotion: reduceMotion)) {
                                             viewModel.selectedRange = range
                                             updateWindowSize(for: range)
                                         }
@@ -305,8 +301,8 @@ struct MainPopoverView: View {
                                             RoundedRectangle(cornerRadius: cornerRadius)
                                                 .stroke(theme.grassBorderColor(for: day.level, isDark: isDark), lineWidth: 0.5)
                                         )
-                                        .scaleEffect(hoveredDay?.id == day.id ? 1.25 : 1.0)
-                                        .animation(.spring(response: 0.2, dampingFraction: 0.65), value: hoveredDay?.id == day.id)
+                                        .scaleEffect(reduceMotion ? 1.0 : (hoveredDay?.id == day.id ? 1.25 : 1.0))
+                                        .animation(.appleSpring(response: 0.2, dampingFraction: 0.85, reduceMotion: reduceMotion), value: hoveredDay?.id == day.id)
                                         .onHover { isHovered in
                                             if isHovered {
                                                 hoveredDay = day
@@ -386,7 +382,7 @@ struct MainPopoverView: View {
                 Spacer()
 
                 Button(action: {
-                    withAnimation(.spring(response: 0.35, dampingFraction: 0.82)) {
+                    withAnimation(.appleSpring(reduceMotion: reduceMotion)) {
                         activeScreen = .stats
                         updatePopoverHeight(480.0)
                     }

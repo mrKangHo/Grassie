@@ -146,6 +146,7 @@ class ContributionViewModel: ObservableObject {
     private static let usernameKey = "github_username"
     private static let themeKey = "app_theme"
     private static let languageKey = "app_language"
+    private static let refreshIntervalKey = "refresh_interval_minutes"
 
     @Published var username: String {
         didSet {
@@ -178,6 +179,15 @@ class ContributionViewModel: ObservableObject {
             AutoLaunchManager.shared.setEnabled(autoLaunchAtLogin)
         }
     }
+
+    @Published var refreshIntervalMinutes: Int {
+        didSet {
+            UserDefaults.standard.set(refreshIntervalMinutes, forKey: Self.refreshIntervalKey)
+            scheduleAutoRefresh()
+        }
+    }
+
+    private var refreshTimer: Timer?
 
     @Published var currentStreak: Int = 0
     @Published var totalContributions: Int = 0
@@ -231,8 +241,26 @@ class ContributionViewModel: ObservableObject {
 
         self.autoLaunchAtLogin = AutoLaunchManager.shared.isEnabled
 
+        let savedInterval = UserDefaults.standard.integer(forKey: Self.refreshIntervalKey)
+        self.refreshIntervalMinutes = savedInterval > 0 ? savedInterval : 15
+
         if !self.username.isEmpty {
             loadLiveData()
+        }
+
+        scheduleAutoRefresh()
+    }
+
+    deinit {
+        refreshTimer?.invalidate()
+    }
+
+    private func scheduleAutoRefresh() {
+        refreshTimer?.invalidate()
+        let interval = TimeInterval(refreshIntervalMinutes * 60)
+        refreshTimer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
+            guard let self = self, !self.username.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+            self.loadLiveData()
         }
     }
 

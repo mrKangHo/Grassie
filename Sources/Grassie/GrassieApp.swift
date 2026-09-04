@@ -1,6 +1,7 @@
 import SwiftUI
 import AppKit
 import Combine
+import QuartzCore
 
 extension NSImage {
     static var appIcon: NSImage? {
@@ -191,11 +192,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         popover.contentViewController = NSHostingController(rootView: popoverView)
         self.popover = popover
 
-        // Observe popover size update requests
+        // Observe popover size update requests.
+        // Matched to the SwiftUI content transitions (spring response 0.35 /
+        // damping 0.82, ~0.4s settle) so the glass panel and its content
+        // move as one instead of drifting apart at different speeds.
         NotificationCenter.default.addObserver(forName: NSNotification.Name("UpdatePopoverSize"), object: nil, queue: .main) { [weak self] note in
             if let size = note.object as? NSSize {
+                let reduceMotion = NSWorkspace.shared.accessibilityDisplayShouldReduceMotion
                 NSAnimationContext.runAnimationGroup { context in
-                    context.duration = 0.2
+                    context.duration = reduceMotion ? 0.001 : 0.38
+                    context.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
                     self?.popover?.contentSize = size
                 }
             }

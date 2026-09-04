@@ -7,6 +7,7 @@ struct StatisticsView: View {
     var onOpenOnboarding: () -> Void
 
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var selectedTimeframe: String = "Month"
 
     private var isDark: Bool {
@@ -46,7 +47,7 @@ struct StatisticsView: View {
                     HStack(spacing: 0) {
                         ForEach(["Week", "Month", "Year"], id: \.self) { tf in
                             Button(action: {
-                                withAnimation(.spring(response: 0.25, dampingFraction: 0.75)) {
+                                withAnimation(.appleSpring(response: 0.25, dampingFraction: 0.75, reduceMotion: reduceMotion)) {
                                     selectedTimeframe = tf
                                 }
                             }) {
@@ -125,7 +126,7 @@ struct StatisticsView: View {
                                         RoundedRectangle(cornerRadius: 3)
                                             .fill(bar.isMax ? Color.primaryContainer : (isDark ? Color.primaryGreen.opacity(0.6) : Color(hex: "40C463")))
                                             .frame(height: max(bar.height, 6))
-                                            .animation(.spring(response: 0.3, dampingFraction: 0.75), value: bar.height)
+                                            .animation(.appleSpring(response: 0.3, dampingFraction: 0.75, reduceMotion: reduceMotion), value: bar.height)
                                         Text(bar.label)
                                             .font(.system(size: 9, design: .monospaced))
                                             .foregroundColor(theme.secondaryTextColor(isDark: isDark))
@@ -155,6 +156,7 @@ struct StatisticsView: View {
                                 HStack(alignment: .firstTextBaseline, spacing: 2) {
                                     Text("\(viewModel.bestDayCount)")
                                         .font(.system(size: 20, weight: .bold))
+                                        .tracking(-0.4)
                                         .foregroundColor(theme.textColor(isDark: isDark))
                                     Text("commits")
                                         .font(.system(size: 10))
@@ -178,6 +180,7 @@ struct StatisticsView: View {
                                 }
                                 Text(String(format: "%.1f%%", viewModel.activeConsistency))
                                     .font(.system(size: 20, weight: .bold))
+                                    .tracking(-0.4)
                                     .foregroundColor(theme.textColor(isDark: isDark))
                             }
                             .padding(10)

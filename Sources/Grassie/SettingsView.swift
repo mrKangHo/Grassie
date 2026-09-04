@@ -5,9 +5,16 @@ struct SettingsView: View {
     var onBack: () -> Void
 
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var currentUsername: String = ""
-    @State private var refreshInterval: String = "15 minutes"
     @State private var isSaved: Bool = false
+
+    private func refreshIntervalLabel(_ minutes: Int) -> String {
+        switch minutes {
+        case 60: return "1 hour"
+        default: return "\(minutes) minutes"
+        }
+    }
 
     private var isDark: Bool {
         viewModel.selectedTheme.isDark(colorScheme: colorScheme)
@@ -107,7 +114,7 @@ struct SettingsView: View {
                             HStack(spacing: 6) {
                                 ForEach(AppLanguage.allCases) { lang in
                                     Button(action: {
-                                        withAnimation(.spring(response: 0.25, dampingFraction: 0.75)) {
+                                        withAnimation(.appleSpring(response: 0.25, dampingFraction: 0.75, reduceMotion: reduceMotion)) {
                                             viewModel.selectedLanguage = lang
                                         }
                                     }) {
@@ -169,7 +176,7 @@ struct SettingsView: View {
                             HStack(spacing: 8) {
                                 ForEach(AppTheme.allCases) { appTheme in
                                     Button(action: {
-                                        withAnimation(.spring(response: 0.25, dampingFraction: 0.75)) {
+                                        withAnimation(.appleSpring(response: 0.25, dampingFraction: 0.75, reduceMotion: reduceMotion)) {
                                             viewModel.selectedTheme = appTheme
                                         }
                                     }) {
@@ -211,11 +218,11 @@ struct SettingsView: View {
                                 Spacer()
 
                                 Menu {
-                                    Button("15 minutes") { refreshInterval = "15 minutes" }
-                                    Button("30 minutes") { refreshInterval = "30 minutes" }
-                                    Button("1 hour") { refreshInterval = "1 hour" }
+                                    Button("15 minutes") { viewModel.refreshIntervalMinutes = 15 }
+                                    Button("30 minutes") { viewModel.refreshIntervalMinutes = 30 }
+                                    Button("1 hour") { viewModel.refreshIntervalMinutes = 60 }
                                 } label: {
-                                    Text(refreshInterval)
+                                    Text(refreshIntervalLabel(viewModel.refreshIntervalMinutes))
                                         .font(.system(size: 11, weight: .semibold))
                                         .foregroundColor(theme.textColor(isDark: isDark))
                                         .padding(.horizontal, 10)
