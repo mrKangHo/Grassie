@@ -1,31 +1,5 @@
 import Foundation
 
-enum AppLanguage: String, CaseIterable, Identifiable {
-    case en = "English"
-    case ko = "한국어"
-    case ja = "日本語"
-    case zh = "中文"
-
-    var id: String { self.rawValue }
-
-    var displayName: String {
-        return self.rawValue
-    }
-
-    static var systemDefault: AppLanguage {
-        let preferred = Locale.preferredLanguages.first?.lowercased() ?? "en"
-        if preferred.hasPrefix("ko") {
-            return .ko
-        } else if preferred.hasPrefix("ja") {
-            return .ja
-        } else if preferred.hasPrefix("zh") {
-            return .zh
-        } else {
-            return .en
-        }
-    }
-}
-
 struct L10n {
     static func streakText(count: Int, language: AppLanguage) -> String {
         switch language {
