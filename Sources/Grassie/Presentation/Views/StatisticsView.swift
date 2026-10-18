@@ -20,7 +20,12 @@ struct StatisticsView: View {
 
     var body: some View {
         ZStack {
-            LiquidGlassBackgroundView(isDark: isDark)
+            VisualEffectView(
+                material: isDark ? .hudWindow : .headerView,
+                blendingMode: .behindWindow
+            )
+
+            StitchAmbientGlowView(isDark: isDark)
 
             VStack(spacing: 0) {
                 // Header Bar
@@ -28,23 +33,24 @@ struct StatisticsView: View {
                     HStack(spacing: 8) {
                         Button(action: onBack) {
                             Image(systemName: "chevron.left")
-                                .font(.system(size: 12, weight: .bold))
-                                .foregroundColor(theme.textColor(isDark: isDark))
+                                .font(.system(size: 11, weight: .bold))
+                                .foregroundColor(isDark ? .white : Color.stitchSlate800)
                                 .frame(width: 28, height: 28)
-                                .background(theme.headerBackgroundColor(isDark: isDark))
+                                .background(isDark ? Color(hex: "1F2937") : Color.white)
                                 .clipShape(Circle())
+                                .overlay(Circle().stroke(isDark ? Color.white.opacity(0.12) : Color.stitchSlate200, lineWidth: 1))
                         }
                         .buttonStyle(.applePress)
 
-                        Text(viewModel.tr("statistics"))
-                            .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(theme.textColor(isDark: isDark))
+                        Text(viewModel.tr("view_full_stats"))
+                            .font(.system(size: 15, weight: .bold))
+                            .foregroundColor(isDark ? .white : Color.stitchSlate900)
                     }
 
                     Spacer()
 
                     // Segmented Timeframe Switcher
-                    HStack(spacing: 0) {
+                    HStack(spacing: 2) {
                         ForEach(["Week", "Month", "Year"], id: \.self) { tf in
                             Button(action: {
                                 withAnimation(.appleSpring(response: 0.25, dampingFraction: 0.75, reduceMotion: reduceMotion)) {
@@ -52,51 +58,74 @@ struct StatisticsView: View {
                                 }
                             }) {
                                 Text(tf)
-                                    .font(.system(size: 10, weight: selectedTimeframe == tf ? .bold : .regular))
-                                    .foregroundColor(selectedTimeframe == tf ? .white : theme.secondaryTextColor(isDark: isDark))
+                                    .font(.system(size: 10.5, weight: selectedTimeframe == tf ? .bold : .medium))
+                                    .foregroundColor(
+                                        selectedTimeframe == tf
+                                            ? Color.stitchIndigo
+                                            : (isDark ? Color.stitchSlate400 : Color.stitchSlate500)
+                                    )
                                     .padding(.horizontal, 8)
-                                    .padding(.vertical, 4)
-                                    .background(selectedTimeframe == tf ? (isDark ? Color.primaryContainer : Color(hex: "216E39")) : Color.clear)
-                                    .cornerRadius(4)
+                                    .padding(.vertical, 3.5)
+                                    .background(
+                                        selectedTimeframe == tf
+                                            ? (isDark ? Color(hex: "1F2937") : Color.white)
+                                            : Color.clear
+                                    )
+                                    .cornerRadius(6)
+                                    .shadow(
+                                        color: selectedTimeframe == tf ? Color.black.opacity(isDark ? 0.2 : 0.04) : Color.clear,
+                                        radius: 2,
+                                        x: 0,
+                                        y: 1
+                                    )
                             }
-                            .buttonStyle(.applePress(scale: 0.94))
+                            .buttonStyle(.plain)
                         }
                     }
                     .padding(2)
-                    .background(theme.headerBackgroundColor(isDark: isDark))
-                    .cornerRadius(6)
-                    .overlay(RoundedRectangle(cornerRadius: 6).stroke(theme.strokeColor(isDark: isDark), lineWidth: 1))
+                    .background(isDark ? Color.white.opacity(0.06) : Color.stitchSlate100)
+                    .cornerRadius(8)
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
-                .background(theme.headerBackgroundColor(isDark: isDark))
-                .overlay(Divider().background(theme.strokeColor(isDark: isDark)), alignment: .bottom)
+                .background(
+                    (isDark ? Color(hex: "131A26").opacity(0.85) : Color.white.opacity(0.92))
+                        .backdropBlur()
+                )
+                .overlay(
+                    Divider().background(isDark ? Color.white.opacity(0.1) : Color.stitchSlate200.opacity(0.8)),
+                    alignment: .bottom
+                )
 
                 // Content
                 ScrollView(.vertical, showsIndicators: false) {
-                    VStack(alignment: .leading, spacing: 14) {
+                    VStack(alignment: .leading, spacing: 12) {
                         // User Badge & Quick Links
                         HStack {
                             HStack(spacing: 6) {
                                 Circle()
-                                    .fill(Color.primaryGreen.opacity(0.2))
-                                    .frame(width: 24, height: 24)
+                                    .fill(Color.stitchEmerald.opacity(0.15))
+                                    .frame(width: 26, height: 26)
                                     .overlay(
                                         Image(systemName: "person.crop.circle.fill")
-                                            .font(.system(size: 14))
-                                            .foregroundColor(.primaryFixed)
+                                            .font(.system(size: 15))
+                                            .foregroundColor(Color.stitchEmerald)
                                     )
                                 Text("@\(viewModel.username)")
-                                    .font(.system(size: 12, weight: .bold))
-                                    .foregroundColor(theme.textColor(isDark: isDark))
+                                    .font(.system(size: 12, weight: .bold, design: .monospaced))
+                                    .foregroundColor(isDark ? .white : Color.stitchSlate900)
                             }
 
                             Spacer()
 
                             Button(action: onOpenSettings) {
                                 Image(systemName: "gearshape")
-                                    .font(.system(size: 13))
-                                    .foregroundColor(theme.secondaryTextColor(isDark: isDark))
+                                    .font(.system(size: 13, weight: .semibold))
+                                    .foregroundColor(isDark ? Color.stitchSlate400 : Color.stitchSlate600)
+                                    .frame(width: 28, height: 28)
+                                    .background(isDark ? Color(hex: "1F2937") : Color.white)
+                                    .cornerRadius(8)
+                                    .overlay(RoundedRectangle(cornerRadius: 8).stroke(isDark ? Color.white.opacity(0.1) : Color.stitchSlate200, lineWidth: 1))
                             }
                             .buttonStyle(.applePress)
                         }
@@ -104,17 +133,17 @@ struct StatisticsView: View {
                         // Bar Chart Card
                         VStack(alignment: .leading, spacing: 10) {
                             HStack {
-                                Text("\(selectedTimeframe)ly Overview")
+                                Text("\(selectedTimeframe)ly Activity Overview")
                                     .font(.system(size: 12, weight: .bold))
-                                    .foregroundColor(theme.textColor(isDark: isDark))
+                                    .foregroundColor(isDark ? .white : Color.stitchSlate900)
                                 Spacer()
-                                Text("Live")
-                                    .font(.system(size: 9, design: .monospaced))
-                                    .foregroundColor(.secondaryFixedDim)
+                                Text(viewModel.tr("live_synced"))
+                                    .font(.system(size: 9.5, weight: .bold, design: .monospaced))
+                                    .foregroundColor(Color.stitchEmerald600)
                                     .padding(.horizontal, 6)
                                     .padding(.vertical, 2)
-                                    .background(Color.secondaryBlue.opacity(0.2))
-                                    .cornerRadius(8)
+                                    .background(Color.stitchEmerald.opacity(0.12))
+                                    .cornerRadius(6)
                             }
 
                             // Chart Bars
@@ -123,13 +152,17 @@ struct StatisticsView: View {
 
                                 ForEach(chartBars, id: \.label) { bar in
                                     VStack(spacing: 4) {
-                                        RoundedRectangle(cornerRadius: 3)
-                                            .fill(bar.isMax ? Color.primaryContainer : (isDark ? Color.primaryGreen.opacity(0.6) : Color(hex: "40C463")))
+                                        RoundedRectangle(cornerRadius: 4)
+                                            .fill(
+                                                bar.isMax
+                                                    ? LinearGradient(colors: [Color.stitchIndigo, Color.stitchBlue], startPoint: .top, endPoint: .bottom)
+                                                    : LinearGradient(colors: [Color.stitchEmerald.opacity(0.85), Color.stitchEmerald600], startPoint: .top, endPoint: .bottom)
+                                            )
                                             .frame(height: max(bar.height, 6))
                                             .animation(.appleSpring(response: 0.3, dampingFraction: 0.75, reduceMotion: reduceMotion), value: bar.height)
                                         Text(bar.label)
-                                            .font(.system(size: 9, design: .monospaced))
-                                            .foregroundColor(theme.secondaryTextColor(isDark: isDark))
+                                            .font(.system(size: 9, weight: .semibold, design: .monospaced))
+                                            .foregroundColor(isDark ? Color.stitchSlate400 : Color.stitchSlate500)
                                     }
                                     .frame(maxWidth: .infinity)
                                 }
@@ -137,62 +170,59 @@ struct StatisticsView: View {
                             .frame(height: 120, alignment: .bottom)
                             .padding(.top, 6)
                         }
-                        .padding(12)
-                        .liquidGlassCard(isDark: isDark, cornerRadius: 10)
+                        .padding(14)
+                        .stitchCard(isDark: isDark, cornerRadius: 16)
 
                         // Metrics Cards
                         HStack(spacing: 10) {
                             // Record Card
-                            VStack(alignment: .leading, spacing: 4) {
+                            VStack(alignment: .leading, spacing: 6) {
                                 HStack {
                                     Image(systemName: "flame.fill")
-                                        .foregroundColor(.primaryFixedDim)
+                                        .foregroundColor(Color.stitchAmber500)
                                         .font(.system(size: 12))
                                     Spacer()
                                     Text("Best Day")
-                                        .font(.system(size: 9))
-                                        .foregroundColor(theme.secondaryTextColor(isDark: isDark))
+                                        .font(.system(size: 10, weight: .medium))
+                                        .foregroundColor(isDark ? Color.stitchSlate400 : Color.stitchSlate500)
                                 }
                                 HStack(alignment: .firstTextBaseline, spacing: 2) {
                                     Text("\(viewModel.bestDayCount)")
-                                        .font(.system(size: 20, weight: .bold))
-                                        .tracking(-0.4)
-                                        .foregroundColor(theme.textColor(isDark: isDark))
-                                    Text("commits")
-                                        .font(.system(size: 10))
-                                        .foregroundColor(isDark ? .primaryFixedDim : Color(hex: "006E1A"))
+                                        .font(.system(size: 22, weight: .heavy, design: .rounded))
+                                        .foregroundColor(isDark ? .white : Color.stitchSlate900)
+                                    Text(viewModel.tr("commits_count"))
+                                        .font(.system(size: 10.5, weight: .semibold))
+                                        .foregroundColor(Color.stitchEmerald600)
                                 }
                             }
-                            .padding(10)
+                            .padding(12)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .liquidGlassCard(isDark: isDark, cornerRadius: 10)
+                            .stitchCard(isDark: isDark, cornerRadius: 14)
 
                             // Consistency Card
-                            VStack(alignment: .leading, spacing: 4) {
+                            VStack(alignment: .leading, spacing: 6) {
                                 HStack {
                                     Image(systemName: "chart.line.uptrend.xyaxis")
-                                        .foregroundColor(.secondaryFixedDim)
+                                        .foregroundColor(Color.stitchIndigo)
                                         .font(.system(size: 12))
                                     Spacer()
-                                    Text("Consistency")
-                                        .font(.system(size: 9))
-                                        .foregroundColor(theme.secondaryTextColor(isDark: isDark))
+                                    Text(viewModel.tr("consistency_rate"))
+                                        .font(.system(size: 10, weight: .medium))
+                                        .foregroundColor(isDark ? Color.stitchSlate400 : Color.stitchSlate500)
                                 }
                                 Text(String(format: "%.1f%%", viewModel.activeConsistency))
-                                    .font(.system(size: 20, weight: .bold))
-                                    .tracking(-0.4)
-                                    .foregroundColor(theme.textColor(isDark: isDark))
+                                    .font(.system(size: 22, weight: .heavy, design: .rounded))
+                                    .foregroundColor(isDark ? .white : Color.stitchSlate900)
                             }
-                            .padding(10)
+                            .padding(12)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .liquidGlassCard(isDark: isDark, cornerRadius: 10)
+                            .stitchCard(isDark: isDark, cornerRadius: 14)
                         }
                     }
                     .padding(16)
                 }
             }
         }
-        .frame(width: 380, height: 420)
     }
 
     private func generateTimeframeBars() -> [(label: String, height: CGFloat, isMax: Bool)] {

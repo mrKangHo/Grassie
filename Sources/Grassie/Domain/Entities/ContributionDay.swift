@@ -38,3 +38,30 @@ public struct GitHubContributionData: Sendable {
         self.activeConsistency = activeConsistency
     }
 }
+
+public struct WeekDayStatus: Identifiable, Sendable {
+    public var id: String { symbol + "_\(dayIndex)" }
+    public let dayIndex: Int // 0: Mon ... 6: Sun
+    public let symbol: String // M, T, W, T, F, S, S
+    public let date: Date
+    public let count: Int
+    public let isToday: Bool
+    public let isFuture: Bool
+
+    public init(
+        dayIndex: Int,
+        symbol: String,
+        date: Date,
+        count: Int,
+        isToday: Bool,
+        isFuture: Bool
+    ) {
+        self.dayIndex = dayIndex
+        self.symbol = symbol
+        self.date = date
+        self.count = count
+        self.isToday = isToday
+        self.isFuture = isFuture
+    }
+}
+

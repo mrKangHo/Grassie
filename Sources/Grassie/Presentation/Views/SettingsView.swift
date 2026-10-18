@@ -26,7 +26,12 @@ struct SettingsView: View {
 
     var body: some View {
         ZStack {
-            LiquidGlassBackgroundView(isDark: isDark)
+            VisualEffectView(
+                material: isDark ? .hudWindow : .headerView,
+                blendingMode: .behindWindow
+            )
+
+            StitchAmbientGlowView(isDark: isDark)
 
             VStack(spacing: 0) {
                 // Header
@@ -34,17 +39,18 @@ struct SettingsView: View {
                     HStack(spacing: 8) {
                         Button(action: onBack) {
                             Image(systemName: "chevron.left")
-                                .font(.system(size: 12, weight: .bold))
-                                .foregroundColor(theme.textColor(isDark: isDark))
+                                .font(.system(size: 11, weight: .bold))
+                                .foregroundColor(isDark ? .white : Color.stitchSlate800)
                                 .frame(width: 28, height: 28)
-                                .background(theme.headerBackgroundColor(isDark: isDark))
+                                .background(isDark ? Color(hex: "1F2937") : Color.white)
                                 .clipShape(Circle())
+                                .overlay(Circle().stroke(isDark ? Color.white.opacity(0.12) : Color.stitchSlate200, lineWidth: 1))
                         }
                         .buttonStyle(.applePress)
 
                         Text(viewModel.tr("settings"))
-                            .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(theme.textColor(isDark: isDark))
+                            .font(.system(size: 15, weight: .bold))
+                            .foregroundColor(isDark ? .white : Color.stitchSlate900)
                     }
 
                     Spacer()
@@ -65,51 +71,61 @@ struct SettingsView: View {
                         }
                         .padding(.horizontal, 10)
                         .padding(.vertical, 5)
-                        .background(Color.primaryContainer)
-                        .foregroundColor(Color(hex: "004D0F"))
-                        .cornerRadius(6)
+                        .background(Color.stitchEmerald)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                        .shadow(color: Color.stitchEmerald.opacity(0.3), radius: 3, x: 0, y: 1)
                     }
                     .buttonStyle(.applePress)
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
-                .background(theme.headerBackgroundColor(isDark: isDark))
-                .overlay(Divider().background(theme.strokeColor(isDark: isDark)), alignment: .bottom)
+                .background(
+                    (isDark ? Color(hex: "131A26").opacity(0.85) : Color.white.opacity(0.92))
+                        .backdropBlur()
+                )
+                .overlay(
+                    Divider().background(isDark ? Color.white.opacity(0.1) : Color.stitchSlate200.opacity(0.8)),
+                    alignment: .bottom
+                )
 
                 // Settings Content
                 ScrollView(.vertical, showsIndicators: false) {
-                    VStack(alignment: .leading, spacing: 14) {
+                    VStack(alignment: .leading, spacing: 12) {
                         // GitHub Account Section
                         VStack(alignment: .leading, spacing: 8) {
                             Label(viewModel.tr("github_account"), systemImage: "person.crop.circle")
-                                .font(.system(size: 13, weight: .bold))
-                                .foregroundColor(theme.textColor(isDark: isDark))
+                                .font(.system(size: 12.5, weight: .bold))
+                                .foregroundColor(isDark ? .white : Color.stitchSlate900)
 
-                            VStack(alignment: .leading, spacing: 4) {
+                            VStack(alignment: .leading, spacing: 5) {
                                 Text(viewModel.tr("username_saved_auto"))
-                                    .font(.system(size: 11))
-                                    .foregroundColor(theme.secondaryTextColor(isDark: isDark))
-                                
+                                    .font(.system(size: 10.5))
+                                    .foregroundColor(isDark ? Color.stitchSlate400 : Color.stitchSlate500)
+
                                 TextField(viewModel.tr("username"), text: $currentUsername)
                                     .textFieldStyle(.plain)
-                                    .font(.system(size: 13, weight: .medium))
-                                    .foregroundColor(theme.textColor(isDark: isDark))
+                                    .font(.system(size: 13, weight: .medium, design: .monospaced))
+                                    .foregroundColor(isDark ? .white : Color.stitchSlate900)
                                     .padding(.horizontal, 10)
-                                    .padding(.vertical, 6)
-                                    .background(theme.headerBackgroundColor(isDark: isDark))
-                                    .cornerRadius(6)
-                                    .overlay(RoundedRectangle(cornerRadius: 6).stroke(theme.strokeColor(isDark: isDark), lineWidth: 1))
+                                    .padding(.vertical, 7)
+                                    .background(isDark ? Color(hex: "1F2937") : Color.stitchSlate50)
+                                    .cornerRadius(8)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .stroke(isDark ? Color.white.opacity(0.12) : Color.stitchSlate200, lineWidth: 1)
+                                    )
                             }
                         }
-                        .padding(12)
+                        .padding(14)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .liquidGlassCard(isDark: isDark, cornerRadius: 10)
+                        .stitchCard(isDark: isDark, cornerRadius: 16)
 
                         // Language Selector Section (English, 한국어, 日本語, 中文)
                         VStack(alignment: .leading, spacing: 8) {
                             Label(viewModel.tr("language"), systemImage: "globe")
-                                .font(.system(size: 13, weight: .bold))
-                                .foregroundColor(theme.textColor(isDark: isDark))
+                                .font(.system(size: 12.5, weight: .bold))
+                                .foregroundColor(isDark ? .white : Color.stitchSlate900)
 
                             HStack(spacing: 6) {
                                 ForEach(AppLanguage.allCases) { lang in
@@ -119,59 +135,63 @@ struct SettingsView: View {
                                         }
                                     }) {
                                         Text(lang.displayName)
-                                            .font(.system(size: 11, weight: viewModel.selectedLanguage == lang ? .bold : .regular))
+                                            .font(.system(size: 11, weight: viewModel.selectedLanguage == lang ? .bold : .medium))
                                             .frame(maxWidth: .infinity)
-                                            .padding(.vertical, 8)
-                                            .background(viewModel.selectedLanguage == lang ? Color.primaryGreen.opacity(0.3) : theme.headerBackgroundColor(isDark: isDark))
-                                            .foregroundColor(viewModel.selectedLanguage == lang ? (isDark ? .primaryFixed : Color(hex: "006E1A")) : theme.secondaryTextColor(isDark: isDark))
-                                            .cornerRadius(6)
-                                            .overlay(
-                                                RoundedRectangle(cornerRadius: 6)
-                                                    .stroke(viewModel.selectedLanguage == lang ? Color.primaryGreen : theme.strokeColor(isDark: isDark), lineWidth: 1.5)
+                                            .padding(.vertical, 7)
+                                            .background(
+                                                viewModel.selectedLanguage == lang
+                                                    ? Color.stitchIndigo
+                                                    : (isDark ? Color(hex: "1F2937") : Color.stitchSlate100)
                                             )
+                                            .foregroundColor(
+                                                viewModel.selectedLanguage == lang
+                                                    ? .white
+                                                    : (isDark ? Color.stitchSlate300 : Color.stitchSlate700)
+                                            )
+                                            .cornerRadius(8)
                                     }
                                     .buttonStyle(.applePress(scale: 0.95))
                                 }
                             }
                         }
-                        .padding(12)
+                        .padding(14)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .liquidGlassCard(isDark: isDark, cornerRadius: 10)
+                        .stitchCard(isDark: isDark, cornerRadius: 16)
 
                         // Startup & System Login Section
                         VStack(alignment: .leading, spacing: 8) {
                             Label(viewModel.tr("system_startup"), systemImage: "macwindow.on.rectangle")
-                                .font(.system(size: 13, weight: .bold))
-                                .foregroundColor(theme.textColor(isDark: isDark))
+                                .font(.system(size: 12.5, weight: .bold))
+                                .foregroundColor(isDark ? .white : Color.stitchSlate900)
 
                             HStack(alignment: .center) {
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(viewModel.tr("launch_at_login"))
-                                        .font(.system(size: 11, weight: .medium))
-                                        .foregroundColor(theme.textColor(isDark: isDark))
+                                        .font(.system(size: 11, weight: .semibold))
+                                        .foregroundColor(isDark ? .white : Color.stitchSlate800)
                                     Text(viewModel.tr("launch_at_login_sub"))
-                                        .font(.system(size: 9))
-                                        .foregroundColor(theme.secondaryTextColor(isDark: isDark))
+                                        .font(.system(size: 9.5))
+                                        .foregroundColor(isDark ? Color.stitchSlate400 : Color.stitchSlate500)
                                 }
-                                
+
                                 Spacer(minLength: 12)
 
                                 Toggle("", isOn: $viewModel.autoLaunchAtLogin)
                                     .toggleStyle(.switch)
                                     .labelsHidden()
-                                    .tint(isDark ? Color.primaryGreen : Color(hex: "216E39"))
+                                    .tint(Color.stitchEmerald)
                             }
                             .padding(.vertical, 2)
                         }
-                        .padding(12)
+                        .padding(14)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .liquidGlassCard(isDark: isDark, cornerRadius: 10)
+                        .stitchCard(isDark: isDark, cornerRadius: 16)
 
-                        // Liquid Glass Appearance Mode Section
+                        // Appearance Mode Section
                         VStack(alignment: .leading, spacing: 8) {
-                            Label(viewModel.tr("appearance_mode"), systemImage: "drop.fill")
-                                .font(.system(size: 13, weight: .bold))
-                                .foregroundColor(theme.textColor(isDark: isDark))
+                            Label(viewModel.tr("appearance_mode"), systemImage: "paintbrush.fill")
+                                .font(.system(size: 12.5, weight: .bold))
+                                .foregroundColor(isDark ? .white : Color.stitchSlate900)
 
                             HStack(spacing: 8) {
                                 ForEach(AppTheme.allCases) { appTheme in
@@ -182,39 +202,43 @@ struct SettingsView: View {
                                     }) {
                                         VStack(spacing: 4) {
                                             Image(systemName: appTheme == .auto ? "desktopcomputer" : (appTheme == .liquidDark ? "moon.fill" : "sun.max.fill"))
-                                                .font(.system(size: 14))
+                                                .font(.system(size: 13))
                                             Text(viewModel.tr(appTheme.labelKey))
-                                                .font(.system(size: 10, weight: viewModel.selectedTheme == appTheme ? .bold : .regular))
+                                                .font(.system(size: 10, weight: viewModel.selectedTheme == appTheme ? .bold : .medium))
                                         }
                                         .frame(maxWidth: .infinity)
-                                        .padding(.vertical, 10)
-                                        .background(viewModel.selectedTheme == appTheme ? Color.primaryGreen.opacity(0.3) : theme.headerBackgroundColor(isDark: isDark))
-                                        .foregroundColor(viewModel.selectedTheme == appTheme ? (isDark ? .primaryFixed : Color(hex: "006E1A")) : theme.secondaryTextColor(isDark: isDark))
-                                        .cornerRadius(8)
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 8)
-                                                .stroke(viewModel.selectedTheme == appTheme ? Color.primaryGreen : theme.strokeColor(isDark: isDark), lineWidth: 1.5)
+                                        .padding(.vertical, 9)
+                                        .background(
+                                            viewModel.selectedTheme == appTheme
+                                                ? Color.stitchIndigo
+                                                : (isDark ? Color(hex: "1F2937") : Color.stitchSlate100)
                                         )
+                                        .foregroundColor(
+                                            viewModel.selectedTheme == appTheme
+                                                ? .white
+                                                : (isDark ? Color.stitchSlate300 : Color.stitchSlate700)
+                                        )
+                                        .cornerRadius(8)
                                     }
                                     .buttonStyle(.applePress(scale: 0.95))
                                 }
                             }
                         }
-                        .padding(12)
+                        .padding(14)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .liquidGlassCard(isDark: isDark, cornerRadius: 10)
+                        .stitchCard(isDark: isDark, cornerRadius: 16)
 
                         // Data Sync Section
                         VStack(alignment: .leading, spacing: 8) {
                             Label(viewModel.tr("data_sync"), systemImage: "arrow.triangle.2.circlepath")
-                                .font(.system(size: 13, weight: .bold))
-                                .foregroundColor(theme.textColor(isDark: isDark))
+                                .font(.system(size: 12.5, weight: .bold))
+                                .foregroundColor(isDark ? .white : Color.stitchSlate900)
 
                             HStack {
                                 Text(viewModel.tr("refresh_interval"))
-                                    .font(.system(size: 11))
-                                    .foregroundColor(theme.secondaryTextColor(isDark: isDark))
-                                
+                                    .font(.system(size: 11, weight: .medium))
+                                    .foregroundColor(isDark ? Color.stitchSlate400 : Color.stitchSlate500)
+
                                 Spacer()
 
                                 Menu {
@@ -224,19 +248,19 @@ struct SettingsView: View {
                                 } label: {
                                     Text(refreshIntervalLabel(viewModel.refreshIntervalMinutes))
                                         .font(.system(size: 11, weight: .semibold))
-                                        .foregroundColor(theme.textColor(isDark: isDark))
+                                        .foregroundColor(isDark ? .white : Color.stitchSlate800)
                                         .padding(.horizontal, 10)
                                         .padding(.vertical, 5)
-                                        .background(theme.headerBackgroundColor(isDark: isDark))
+                                        .background(isDark ? Color(hex: "1F2937") : Color.stitchSlate100)
                                         .cornerRadius(6)
-                                        .overlay(RoundedRectangle(cornerRadius: 6).stroke(theme.strokeColor(isDark: isDark), lineWidth: 1))
+                                        .overlay(RoundedRectangle(cornerRadius: 6).stroke(isDark ? Color.white.opacity(0.1) : Color.stitchSlate200, lineWidth: 1))
                                 }
                                 .menuStyle(.borderlessButton)
                             }
                         }
-                        .padding(12)
+                        .padding(14)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .liquidGlassCard(isDark: isDark, cornerRadius: 10)
+                        .stitchCard(isDark: isDark, cornerRadius: 16)
 
                         // Quit Grassie Section Button
                         Button(action: {
@@ -244,16 +268,16 @@ struct SettingsView: View {
                         }) {
                             HStack(spacing: 6) {
                                 Image(systemName: "power")
-                                    .font(.system(size: 13, weight: .bold))
-                                Text("Quit Grassie")
                                     .font(.system(size: 12, weight: .bold))
+                                Text(viewModel.tr("quit_app"))
+                                    .font(.system(size: 11.5, weight: .bold))
                             }
                             .foregroundColor(.red)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 9)
-                            .background(Color.red.opacity(0.12))
-                            .cornerRadius(8)
-                            .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.red.opacity(0.3), lineWidth: 1))
+                            .background(Color.red.opacity(isDark ? 0.15 : 0.08))
+                            .cornerRadius(10)
+                            .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.red.opacity(0.25), lineWidth: 1))
                         }
                         .buttonStyle(.applePress)
                         .padding(.top, 4)
@@ -262,7 +286,6 @@ struct SettingsView: View {
                 }
             }
         }
-        .frame(width: 380, height: 420)
         .onAppear {
             currentUsername = viewModel.username
         }

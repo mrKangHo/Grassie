@@ -171,5 +171,79 @@ extension View {
     func liquidGlassCard(isDark: Bool = true, cornerRadius: CGFloat = 10) -> some View {
         self.modifier(LiquidGlassCardModifier(isDark: isDark, cornerRadius: cornerRadius))
     }
+
+    func stitchCard(isDark: Bool = false, cornerRadius: CGFloat = 16) -> some View {
+        self.modifier(StitchCardModifier(isDark: isDark, cornerRadius: cornerRadius))
+    }
 }
+
+// MARK: - Stitch Modern Card Modifier
+struct StitchCardModifier: ViewModifier {
+    var isDark: Bool = false
+    var cornerRadius: CGFloat = 16
+
+    func body(content: Content) -> some View {
+        content
+            .background(
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .fill(isDark ? Color(hex: "151D2A").opacity(0.9) : Color.white)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .stroke(
+                        isDark ? Color.white.opacity(0.12) : Color(hex: "E2E8F0").opacity(0.95),
+                        lineWidth: 1
+                    )
+            )
+            .shadow(
+                color: isDark ? Color.black.opacity(0.3) : Color(hex: "0F172A").opacity(0.04),
+                radius: 10,
+                x: 0,
+                y: 4
+            )
+    }
+}
+
+// MARK: - Stitch Ambient Glow View
+struct StitchAmbientGlowView: View {
+    var isDark: Bool = false
+
+    var body: some View {
+        ZStack {
+            // Top Ambient Light Blob
+            Circle()
+                .fill(
+                    RadialGradient(
+                        colors: isDark
+                            ? [Color(hex: "4F46E5").opacity(0.18), Color(hex: "2563EB").opacity(0.10), Color.clear]
+                            : [Color(hex: "818CF8").opacity(0.20), Color(hex: "93C5FD").opacity(0.15), Color.clear],
+                        center: .center,
+                        startRadius: 10,
+                        endRadius: 180
+                    )
+                )
+                .frame(width: 320, height: 320)
+                .offset(y: -150)
+                .blur(radius: 40)
+
+            // Bottom Right Emerald Glow Blob
+            Circle()
+                .fill(
+                    RadialGradient(
+                        colors: isDark
+                            ? [Color(hex: "10B981").opacity(0.15), Color.clear]
+                            : [Color(hex: "6EE7B7").opacity(0.22), Color.clear],
+                        center: .center,
+                        startRadius: 10,
+                        endRadius: 160
+                    )
+                )
+                .frame(width: 260, height: 260)
+                .offset(x: 110, y: 160)
+                .blur(radius: 45)
+        }
+        .allowsHitTesting(false)
+    }
+}
+
 

@@ -178,6 +178,90 @@ struct L10n {
             .ja: "詳細統計を見る",
             .zh: "查看详细统计"
         ],
+        "detailed_stats_report": [
+            .en: "Detailed Stats Report",
+            .ko: "상세 통계 리포트",
+            .ja: "詳細統計レポート",
+            .zh: "详细统计报告"
+        ],
+        "streak_active": [
+            .en: "Streak in Progress",
+            .ko: "연속 커밋 유지 중",
+            .ja: "連続コミット維持中",
+            .zh: "连续提交保持中"
+        ],
+        "streak_achieved": [
+            .en: "Days Streak",
+            .ko: "일 연속 달성",
+            .ja: "日連続達成",
+            .zh: "天连续达成"
+        ],
+        "max_streak": [
+            .en: "Best",
+            .ko: "최고",
+            .ja: "最高",
+            .zh: "最高"
+        ],
+        "streak_prompt_pending": [
+            .en: "Extend your streak with a commit today!",
+            .ko: "오늘 커밋으로 스트릭을 연장해보세요!",
+            .ja: "今日のコミットでストリークを伸ばそう！",
+            .zh: "今天提交一次来延长连续记录吧！"
+        ],
+        "streak_prompt_done": [
+            .en: "You planted your grass today! 🎉",
+            .ko: "오늘 잔디 심기를 완료했어요! 🎉",
+            .ja: "今日の草を生やしました！🎉",
+            .zh: "今天已完成绿化！🎉"
+        ],
+        "this_week_status": [
+            .en: "This Week's Activity",
+            .ko: "이번 주 잔디 현황",
+            .ja: "今週のコミット状況",
+            .zh: "本周提交情况"
+        ],
+        "consistency_rate": [
+            .en: "Contribution Rate",
+            .ko: "기여 일수 비율",
+            .ja: "貢献日数比率",
+            .zh: "贡献天数比例"
+        ],
+        "top_percent_badge": [
+            .en: "Top 5% Consistency",
+            .ko: "상위 5% 달성",
+            .ja: "上位5%達成",
+            .zh: "排名前 5%"
+        ],
+        "steady_dev_badge": [
+            .en: "Consistent Dev",
+            .ko: "꾸준한 개발자",
+            .ja: "継続的な開発者",
+            .zh: "持之以恒的开发者"
+        ],
+        "this_year_contributions": [
+            .en: "This year",
+            .ko: "올해",
+            .ja: "今年",
+            .zh: "今年"
+        ],
+        "sync_completed": [
+            .en: "Sync Completed",
+            .ko: "동기화 완료",
+            .ja: "同期完了",
+            .zh: "同步完成"
+        ],
+        "live_synced": [
+            .en: "Live synced",
+            .ko: "실시간 동기화",
+            .ja: "ライブ同期",
+            .zh: "实时同步"
+        ],
+        "quit_app": [
+            .en: "Quit App",
+            .ko: "앱 종료",
+            .ja: "アプリ終了",
+            .zh: "退出应用"
+        ],
         "fetching_contributions": [
             .en: "Fetching GitHub contributions...",
             .ko: "GitHub 잔디를 불러오는 중...",

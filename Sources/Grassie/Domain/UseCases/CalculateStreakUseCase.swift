@@ -2,6 +2,7 @@ import Foundation
 
 public protocol CalculateStreakUseCaseProtocol: Sendable {
     func calculateStreak(from days: [ContributionDay]) -> Int
+    func calculateLongestStreak(from days: [ContributionDay]) -> Int
 }
 
 public final class CalculateStreakUseCase: CalculateStreakUseCaseProtocol {
@@ -33,4 +34,40 @@ public final class CalculateStreakUseCase: CalculateStreakUseCaseProtocol {
         }
         return streak
     }
+
+    public func calculateLongestStreak(from days: [ContributionDay]) -> Int {
+        let calendar = Calendar.current
+        let sortedDays = days.sorted(by: { $0.date < $1.date })
+
+        var maxStreak = 0
+        var currentRunningStreak = 0
+        var previousDate: Date? = nil
+
+        for day in sortedDays {
+            guard day.count > 0 else {
+                currentRunningStreak = 0
+                previousDate = nil
+                continue
+            }
+
+            if let prev = previousDate {
+                let dayDifference = calendar.dateComponents([.day], from: calendar.startOfDay(for: prev), to: calendar.startOfDay(for: day.date)).day ?? 0
+                if dayDifference == 1 {
+                    currentRunningStreak += 1
+                } else if dayDifference > 1 {
+                    currentRunningStreak = 1
+                }
+            } else {
+                currentRunningStreak = 1
+            }
+
+            previousDate = day.date
+            if currentRunningStreak > maxStreak {
+                maxStreak = currentRunningStreak
+            }
+        }
+
+        return maxStreak
+    }
 }
+

@@ -12,6 +12,30 @@
 		<data>
 		5HuVB1ACLISsZPpFsXftU4ZJIuU=
 		</data>
+		<key>Resources/Grassie_Grassie.bundle/Contents/Info.plist</key>
+		<data>
+		6VvVDOx21+O+oKczusnrPGKNidk=
+		</data>
+		<key>Resources/Grassie_Grassie.bundle/Contents/Resources/AppIcon.icns</key>
+		<data>
+		5HuVB1ACLISsZPpFsXftU4ZJIuU=
+		</data>
+		<key>Resources/Grassie_Grassie.bundle/Contents/_CodeSignature/CodeDirectory</key>
+		<data>
+		TJ3UM1dqLQjz/WBkTIRh0mzAV/M=
+		</data>
+		<key>Resources/Grassie_Grassie.bundle/Contents/_CodeSignature/CodeRequirements</key>
+		<data>
+		OnX22wWFKRSOFN1+obRynMCeyXM=
+		</data>
+		<key>Resources/Grassie_Grassie.bundle/Contents/_CodeSignature/CodeResources</key>
+		<data>
+		A3l2F7LY04/Qs36NH9VxsozMeeU=
+		</data>
+		<key>Resources/Grassie_Grassie.bundle/Contents/_CodeSignature/CodeSignature</key>
+		<data>
+		2jmj7l5rSw0yVb/vlWAYkK/YBwk=
+		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
@@ -27,6 +51,48 @@
 			<key>hash2</key>
 			<data>
 			rovPTL7VNCQytkYwzKRsUEOVmtxx9smbbw5w7yrpgjk=
+			</data>
+		</dict>
+		<key>Resources/Grassie_Grassie.bundle/Contents/Info.plist</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			444vS7aVpgfnb7mbIdVNKrybxW2062z44SnueE7kYT4=
+			</data>
+		</dict>
+		<key>Resources/Grassie_Grassie.bundle/Contents/Resources/AppIcon.icns</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			rovPTL7VNCQytkYwzKRsUEOVmtxx9smbbw5w7yrpgjk=
+			</data>
+		</dict>
+		<key>Resources/Grassie_Grassie.bundle/Contents/_CodeSignature/CodeDirectory</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			sZhDTAm447hVWxZDsguMNVoUSUww+IofsE1r3YJ9ilU=
+			</data>
+		</dict>
+		<key>Resources/Grassie_Grassie.bundle/Contents/_CodeSignature/CodeRequirements</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			mHkgkE6rZQ51eIwFSqCwUk5qgL/HGqMt+NI3phdD+YY=
+			</data>
+		</dict>
+		<key>Resources/Grassie_Grassie.bundle/Contents/_CodeSignature/CodeResources</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			q5xSduXMAiWrlE1vTEUCNEuu82MELG29zHiriomKN5M=
+			</data>
+		</dict>
+		<key>Resources/Grassie_Grassie.bundle/Contents/_CodeSignature/CodeSignature</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=
 			</data>
 		</dict>
 	</dict>

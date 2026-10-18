@@ -49,7 +49,10 @@ public final class ContributionViewModel: ObservableObject {
     private var refreshTimer: Timer?
 
     @Published public var currentStreak: Int = 0
+    @Published public var longestStreak: Int = 0
     @Published public var totalContributions: Int = 0
+    @Published public var thisYearContributions: Int = 0
+    @Published public var todayCount: Int = 0
     @Published public var bestDayCount: Int = 0
     @Published public var bestDayDate: String = ""
     @Published public var activeConsistency: Double = 0.0
@@ -60,6 +63,42 @@ public final class ContributionViewModel: ObservableObject {
     @Published public var isLoading: Bool = false
     @Published public var lastUpdated: String = "Just now"
     @Published public var errorMessage: String? = nil
+
+    public var thisWeekStatuses: [WeekDayStatus] {
+        var calendar = Calendar.current
+        calendar.firstWeekday = 2 // Monday = 2
+        let now = Date()
+        let today = calendar.startOfDay(for: now)
+
+        guard let weekInterval = calendar.dateInterval(of: .weekOfYear, for: now) else {
+            return []
+        }
+
+        let symbols = ["M", "T", "W", "T", "F", "S", "S"]
+        var results: [WeekDayStatus] = []
+
+        for index in 0..<7 {
+            guard let date = calendar.date(byAdding: .day, value: index, to: weekInterval.start) else { continue }
+            let dayStart = calendar.startOfDay(for: date)
+            let isToday = calendar.isDate(dayStart, inSameDayAs: today)
+            let isFuture = dayStart > today
+
+            let matchingDay = days.first(where: { calendar.isDate($0.date, inSameDayAs: dayStart) })
+            let count = matchingDay?.count ?? 0
+
+            results.append(
+                WeekDayStatus(
+                    dayIndex: index,
+                    symbol: symbols[index],
+                    date: date,
+                    count: count,
+                    isToday: isToday,
+                    isFuture: isFuture
+                )
+            )
+        }
+        return results
+    }
 
     public var streakBadgeEmoji: String {
         switch currentStreak {
@@ -157,9 +196,20 @@ public final class ContributionViewModel: ObservableObject {
                     self.days = data.days
                     self.totalContributions = data.totalContributions
                     self.currentStreak = self.calculateStreakUseCase.calculateStreak(from: data.days)
+                    self.longestStreak = self.calculateStreakUseCase.calculateLongestStreak(from: data.days)
                     self.bestDayCount = data.bestDayCount
                     self.bestDayDate = data.bestDayDate
                     self.activeConsistency = data.activeConsistency
+
+                    let calendar = Calendar.current
+                    let now = Date()
+                    let currentYear = calendar.component(.year, from: now)
+                    self.thisYearContributions = data.days
+                        .filter { calendar.component(.year, from: $0.date) == currentYear }
+                        .reduce(0) { $0 + $1.count }
+
+                    self.todayCount = data.days
+                        .first(where: { calendar.isDateInToday($0.date) })?.count ?? 0
 
                     let formatter = DateFormatter()
                     formatter.dateFormat = "HH:mm"
